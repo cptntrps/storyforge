@@ -1,0 +1,9 @@
+{
+  "implied_story": {"governing_thought": "Company X should test Product A at scale before raising its budget.", "slides": [1], "reasons": ["Q2 rests on one product", "scale beyond $90k is unproven", "Q3 tests first"]},
+  "defects": [{"text": "slide 6 restates slide 4 with the same figures", "slides": [4, 6]}],
+  "off_path": [7],
+  "R01": {"pass_a": "PASS", "pass_b": "PASS", "evidence": [{"slides": [1], "text": "the summary opens with the answer"}]},
+  "R02": {"pass_a": "FAIL", "pass_b": "FAIL", "evidence": [{"slides": [1], "text": "no complication is stated before the answer"}]},
+  "R04": {"pass_a": "PASS", "pass_b": "FAIL", "evidence": [{"slides": [4, 6], "text": "pass b reads slides 4 and 6 as one claim"}]},
+  "R21": {"pass_a": "FAIL", "pass_b": "FAIL", "evidence": [{"slides": [5], "text": "the titles do not end in the decision"}]}
+}
