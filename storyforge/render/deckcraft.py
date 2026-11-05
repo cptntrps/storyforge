@@ -321,10 +321,37 @@ def _layout_text_only(d, story, slide, charts, top, bottom):
         d.bullets(g['x0'], top, g['w0'], slide['body'], size=12)
 
 
+def _layout_charts_row(d, story, slide, charts, top, bottom):
+    """Two or three charts side by side; each column: the chart's takeaway, then its PNG."""
+    g, c = d.g, d.c_
+    specs = slide.get('charts') or []
+    if len(specs) < 2:
+        raise ValueError(f'slide {slide["id"]}: layout charts_row needs 2 or 3 charts')
+    items = (charts.get(slide['id']) or {}).get('items') or []
+    n = len(specs)
+    col_w = round((g['w0'] - g['gutter'] * (n - 1)) / n, 2)
+    for i, spec in enumerate(specs):
+        x = round(g['x0'] + i * (col_w + g['gutter']), 2)
+        y = top
+        if spec.get('takeaway'):
+            k = d.lines(spec['takeaway'], col_w, 12)
+            d.text(x, y, col_w, spec['takeaway'], size=12, bold=True, h=k * 21, anchor='top')
+            y += k * 21 + 10
+        rect = [x, y, col_w, round(bottom - y, 2)]
+        item = items[i] if i < len(items) and isinstance(items[i], dict) else {}
+        png = item.get('png')
+        if png and Path(png).exists():
+            d.picture(png, rect)
+        else:
+            d.rect(x, y, col_w, rect[3], c['band'], line=c['line'], text=spec.get('title') or 'Chart',
+                   size=11, color=c['muted'], align='center')
+
+
 LAYOUTS = {
     'summary': _layout_summary,
     'chart_left': _layout_chart_left,
     'chart_full': _layout_chart_full,
+    'charts_row': _layout_charts_row,
     'table': _layout_table,
     'three_columns': _layout_three_columns,
     'text_only': _layout_text_only,

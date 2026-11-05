@@ -4,7 +4,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from .checks.charts import BUILDERS
+from .checks.charts import BUILDERS, slide_charts
 
 PKG = Path(__file__).resolve().parent
 BRIDGE = PKG / 'charts_bridge.mjs'
@@ -42,22 +42,27 @@ def svg_to_png(svg_text, out_png, scale=2):
 
 
 def render_charts(story, out_dir, svg_charts_path=DEFAULT_SVG_CHARTS, png=True):
-    """{slide_id: {'svg': Path, 'png': Path}} for builder charts; {slide_id: {'table': rows}} for the rest."""
+    """Per slide id: {'svg', 'png'} for a single chart; {'items': [{'svg', 'png'}, ...]} for charts[];
+    {'table': rows, 'gap': why} when the type is not a builder."""
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     result = {}
-    for s in story['slides']:
-        ch = s.get('chart')
-        if not ch:
-            continue
+
+    def one(ref, ch):
         if ch.get('type') not in BUILDERS:
-            result[s['id']] = {'table': ch.get('rows') or [], 'gap': f"{ch.get('type')} is not a builder; rendered as table"}
-            continue
+            return {'table': ch.get('rows') or [], 'gap': f"{ch.get('type')} is not a builder; rendered as table"}
         svg = render_svg(ch, svg_charts_path)
-        svg_path = out / f"{s['id']}.svg"
+        name = ref.replace('#', '_')
+        svg_path = out / f'{name}.svg'
         svg_path.write_text(svg)
         entry = {'svg': svg_path}
         if png:
-            entry['png'] = svg_to_png(svg, out / f"{s['id']}.png")
-        result[s['id']] = entry
+            entry['png'] = svg_to_png(svg, out / f'{name}.png')
+        return entry
+
+    for s in story['slides']:
+        if s.get('chart'):
+            result[s['id']] = one(s['id'], s['chart'])
+        elif s.get('charts'):
+            result[s['id']] = {'items': [one(f"{s['id']}#{i}", ch) for i, ch in enumerate(s['charts'])]}
     return result

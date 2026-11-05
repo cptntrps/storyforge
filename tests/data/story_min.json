@@ -21,7 +21,8 @@
       "name": "period_result",
       "lead": "Q2 met the target through one product",
       "bullets": [
-        "Product A cut June cost per order to $119, so Company X met its $125 target through one product."
+        "Product A cut June cost per order to $119, so Company X met its $125 target through one product.",
+        "Product A brought 75% of June's new customers, while Products B and C held 72% of June spend."
       ]
     },
     {
@@ -192,6 +193,178 @@
             },
             "column": "value",
             "agg": "value"
+          }
+        }
+      ],
+      "covers": [
+        "obj_one_product"
+      ]
+    },
+    {
+      "id": "q2_by_product",
+      "kind": "key",
+      "parent": null,
+      "section": "Q2",
+      "title": "Product A brought 75% of June's new customers, while Products B and C held 72% of June spend.",
+      "title_roles": {
+        "subject": "Product A",
+        "verb": "brought",
+        "object": "75% of June's new customers",
+        "measure": "while Products B and C held 72% of June spend"
+      },
+      "subtitle": "June by product: new customers, funnel mix and spend against attributed revenue.",
+      "takeaway": "Spend and results sit on different products.",
+      "callout": "75% of customers on 28% of spend",
+      "layout": "charts_row",
+      "charts": [
+        {
+          "type": "barChart",
+          "title": "June new customers by product",
+          "unit": "customers",
+          "source": "Ad platform export, June 2025",
+          "takeaway": "Product A brings three in four",
+          "data": [
+            {
+              "label": "Product A",
+              "value": 4055
+            },
+            {
+              "label": "Product B",
+              "value": 870
+            },
+            {
+              "label": "Product C",
+              "value": 500
+            }
+          ],
+          "annotations": [
+            {
+              "index": 0,
+              "text": "4,055, 75%"
+            }
+          ]
+        },
+        {
+          "type": "stackedBars",
+          "title": "Share of June spend by product",
+          "unit": "%",
+          "source": "Ad platform export, June 2025",
+          "takeaway": "B and C take 72% of spend",
+          "columns": [
+            {
+              "label": "Spend",
+              "parts": {
+                "Product A": 75600,
+                "Product B": 140400,
+                "Product C": 54000
+              }
+            }
+          ],
+          "keys": [
+            "Product A",
+            "Product B",
+            "Product C"
+          ],
+          "annotations": [
+            {
+              "index": 0,
+              "series": 1,
+              "text": "B and C: 72%"
+            }
+          ]
+        },
+        {
+          "type": "lineChart",
+          "title": "Product A spend and attributed revenue by month",
+          "unit": "$k",
+          "source": "Ad platform export, April to June 2025",
+          "takeaway": "Revenue grows faster than spend",
+          "labels": [
+            "Apr",
+            "May",
+            "Jun"
+          ],
+          "series": [
+            {
+              "name": "Spend",
+              "points": [
+                {
+                  "x": "Apr",
+                  "y": 0
+                },
+                {
+                  "x": "May",
+                  "y": 120
+                },
+                {
+                  "x": "Jun",
+                  "y": 76
+                }
+              ]
+            },
+            {
+              "name": "Revenue",
+              "points": [
+                {
+                  "x": "Apr",
+                  "y": 0
+                },
+                {
+                  "x": "May",
+                  "y": 180
+                },
+                {
+                  "x": "Jun",
+                  "y": 243
+                }
+              ]
+            }
+          ],
+          "annotations": [
+            {
+              "series": 1,
+              "index": 2,
+              "text": "$243k revenue"
+            }
+          ]
+        }
+      ],
+      "chart": null,
+      "table": null,
+      "source": "Ad platform export, April to June 2025",
+      "numbers": [
+        {
+          "value": 75,
+          "metric": "share of June new customers, %",
+          "base": "5,425 total",
+          "trace": {
+            "where": {
+              "period": "2025-06",
+              "sku": "Product A"
+            },
+            "column": "orders",
+            "agg": "share",
+            "of": {
+              "period": "2025-06",
+              "sku": ""
+            }
+          }
+        },
+        {
+          "value": 72,
+          "metric": "share of June spend, %",
+          "base": "all products",
+          "trace": {
+            "where": {
+              "period": "2025-06",
+              "sku_group": "B+C"
+            },
+            "column": "spend",
+            "agg": "share",
+            "of": {
+              "period": "2025-06",
+              "sku": ""
+            }
           }
         }
       ],

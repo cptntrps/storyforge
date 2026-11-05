@@ -80,3 +80,15 @@ def test_render_md_rows_and_questions_last():
     assert len(re.findall(r'^\| R\d\d \|', md, re.M)) == 22
     assert md.rstrip().splitlines()[-1].startswith('- ') and '## Questions' in md
     assert '—' not in md
+
+
+def test_join_passes_marks_disagreement():
+    from storyforge.ratecard import join_passes
+    a = {'R04': {'verdict': 'PASS', 'evidence': [{'slides': [1], 'text': 'a'}]}, 'R21': {'verdict': 'FAIL'}, 'implied_story': {'governing_thought': 'x', 'slides': [1]}, 'defects': [{'text': 'dup', 'slides': [2]}], 'off_path': [3, 4]}
+    b = {'R04': {'verdict': 'FAIL', 'evidence': [{'slides': [2], 'text': 'b'}]}, 'R21': {'verdict': 'FAIL'}, 'defects': [{'text': 'Dup', 'slides': [2]}, {'text': 'other'}], 'off_path': [4]}
+    j = join_passes(a, b)
+    assert j['R04'] == {'pass_a': 'PASS', 'pass_b': 'FAIL', 'evidence': [{'pass': 'a', 'slides': [1], 'text': 'a'}, {'pass': 'b', 'slides': [2], 'text': 'b'}]}
+    assert j['R21']['pass_a'] == j['R21']['pass_b'] == 'FAIL'
+    assert [d['text'] for d in j['defects']] == ['dup', 'other'] and j['off_path'] == [4]
+    rc = build_ratecard(deck(), judgments=j)
+    assert by_id(rc)['R04']['result'] == 'DISAGREE' and by_id(rc)['R21']['result'] == 'FAIL'

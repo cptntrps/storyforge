@@ -25,9 +25,12 @@ def test_render_svg_has_title_unit_source_callout(story_min):
 def test_render_charts_writes_svg_and_png(story_min, tmp_path):
     need_node()
     res = render_charts(story_min, tmp_path)
-    assert set(res) == {'q2_result', 'what_we_see'}
+    assert set(res) == {'q2_result', 'q2_by_product', 'what_we_see'}
     assert res['q2_result']['svg'].read_text().startswith('<svg')
     assert res['q2_result']['png'].stat().st_size > 1000
+    items = res['q2_by_product']['items']
+    assert len(items) == 3 and all(i['png'].stat().st_size > 1000 for i in items)
+    assert (tmp_path / 'q2_by_product_1.svg').exists() and 'Share of June spend' in items[1]['svg'].read_text()
 
 
 def test_non_builder_becomes_table(story_min, tmp_path):

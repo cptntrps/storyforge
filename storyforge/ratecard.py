@@ -176,3 +176,25 @@ def render_md(rc):
         for q in rc['questions']:
             lines.append(f"- {q['q']} Default: {q['default']}. Why: {q['why']}.")
     return '\n'.join(lines) + '\n'
+
+
+def join_passes(pass_a, pass_b):
+    """Two blind passes ({check_id: {verdict, evidence}, implied_story, defects, off_path}) into judgments.json.
+    Pass A supplies the deck-level fields; pass B's defects are appended when their text is new."""
+    out = {}
+    ids = sorted({k for k in list(pass_a) + list(pass_b) if k.startswith('R') and k[1:].isdigit()})
+    for cid in ids:
+        a, b = pass_a.get(cid) or {}, pass_b.get(cid) or {}
+        out[cid] = {'pass_a': a.get('verdict', 'NA'), 'pass_b': b.get('verdict', 'NA'),
+                    'evidence': [{'pass': 'a', **e} for e in a.get('evidence', [])] + [{'pass': 'b', **e} for e in b.get('evidence', [])]}
+    out['implied_story'] = pass_a.get('implied_story') or pass_b.get('implied_story')
+    seen, defects = set(), []
+    for d in list(pass_a.get('defects', [])) + list(pass_b.get('defects', [])):
+        key = d['text'].strip().lower()[:60]
+        if key not in seen:
+            seen.add(key)
+            defects.append(d)
+    out['defects'] = defects
+    out['off_path'] = sorted(set(pass_a.get('off_path', [])) & set(pass_b.get('off_path', [])))
+    schema.require_valid('judgments', out)
+    return out

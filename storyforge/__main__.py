@@ -58,6 +58,14 @@ def cmd_ratecard(a):
     print(f"{md}: {len(fails)} FAIL/DISAGREE {fails}; {len(rc['questions'])} question(s)")
 
 
+def cmd_judgments(a):
+    from .ratecard import join_passes
+    out = join_passes(_load(a.pass_a), _load(a.pass_b))
+    _dump(out, a.out)
+    dis = [k for k, v in out.items() if k.startswith('R') and v['pass_a'] != v['pass_b']]
+    print(f"{a.out}: {len([k for k in out if k.startswith('R')])} judged checks, disagree on {dis}")
+
+
 def _rows(a):
     if not getattr(a, 'rows', None):
         return None
@@ -142,6 +150,7 @@ def main(argv=None):
     sp = p.add_subparsers(dest='cmd', required=True)
     s = sp.add_parser('ingest'); s.add_argument('file'); s.add_argument('-o', '--out', required=True); s.set_defaults(f=cmd_ingest)
     s = sp.add_parser('ratecard'); s.add_argument('deck'); s.add_argument('--frame'); s.add_argument('--judgments'); s.add_argument('-o', '--out', required=True); s.set_defaults(f=cmd_ratecard)
+    s = sp.add_parser('judgments'); s.add_argument('pass_a'); s.add_argument('pass_b'); s.add_argument('-o', '--out', required=True); s.set_defaults(f=cmd_judgments)
     s = sp.add_parser('validate'); s.add_argument('story'); s.add_argument('--rows'); s.set_defaults(f=cmd_validate)
     s = sp.add_parser('storylines'); s.add_argument('candidates', nargs='+'); s.add_argument('--frame'); s.add_argument('--rows'); s.add_argument('--judgments'); s.add_argument('-o', '--out', required=True); s.set_defaults(f=cmd_storylines)
     s = sp.add_parser('charts'); s.add_argument('story'); s.add_argument('-o', '--out', required=True); s.add_argument('--no-png', action='store_true'); s.set_defaults(f=cmd_charts)

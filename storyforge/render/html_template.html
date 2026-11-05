@@ -119,6 +119,12 @@ table { border-collapse: collapse; width: 100%; margin-top: 8px; }
 th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--rule); }
 th { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
 td:not(:first-child), th:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+.charts-row { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 20px; align-items: start; }
+.charts-row figure { min-width: 0; }
+.charts-row figcaption.chart-takeaway { font-size: 0.95rem; color: var(--ink); margin: 0 0 8px; }
+.charts-row figure.chart-missing { flex-direction: column; }
+.chart-title { margin: 0; }
+.body > .callout { margin: 0 0 12px; }
 .three-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
 .col { border-top: 2px solid var(--accent); padding-top: 10px; }
 .col-takeaway { margin: 0 0 6px; font-weight: 600; }
@@ -129,7 +135,7 @@ td:not(:first-child), th:not(:first-child) { text-align: right; font-variant-num
 .details a, .back a { color: var(--accent); }
 @media (max-width: 640px) {
   section.slide { padding: 20px 16px; }
-  .chart-left { grid-template-columns: 1fr; }
+  .chart-left, .charts-row { grid-template-columns: 1fr; }
 }
 @page { size: landscape; margin: 12mm; }
 @media print {

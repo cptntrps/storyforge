@@ -2,7 +2,7 @@ import json
 
 from openpyxl import load_workbook
 
-from storyforge.handoff import GATES, build_handoff, chart_rows
+from storyforge.handoff import GATES, LAYOUT_SKETCHES, build_handoff, chart_rows, sheet_name
 
 EM_DASH = chr(0x2014)
 
@@ -23,7 +23,10 @@ def test_every_spec_file_exists(story_min, tmp_path):
     assert not missing, missing
     assert (out / 'charts').is_dir()
     for s in story_min['slides']:
-        if s.get('chart') or s.get('table'):
+        if s.get('charts'):
+            for i in range(1, len(s['charts']) + 1):
+                assert (out / 'data' / f"{s['id']}_{i}.csv").exists()
+        elif s.get('chart') or s.get('table'):
             assert (out / 'data' / f"{s['id']}.csv").exists()
     assert json.loads((out / 'story.json').read_text()) == story_min
 
@@ -57,6 +60,12 @@ def test_brief_has_one_section_per_slide_and_no_em_dash(story_min, tmp_path):
         assert f"## Slide {n}: {s['id']}" in brief
         assert s['title'] in brief
     assert 'data.xlsx sheet q2_result' in brief
+    section = brief.split('## Slide 3: q2_by_product')[1].split('## Slide 4')[0]
+    assert '- Charts: 3, left to right' in section
+    for i, c in enumerate(story_min['slides'][2]['charts'], 1):
+        assert f'- Chart {i}: takeaway "{c["takeaway"]}", type {c["type"]}' in section
+        assert f'data.xlsx sheet q2_by_product_{i}' in section
+    assert '### charts_row' in brief and LAYOUT_SKETCHES['charts_row'] in brief
     assert 'python3 -m storyforge gates <your.pptx> --story story.json' in brief
     for other in ('CHECKLIST.md', 'ratecard_before.md'):
         assert EM_DASH not in (out / other).read_text()
@@ -94,3 +103,29 @@ def test_chart_rows_per_type():
     assert chart_rows({'type': 'stackedBars', 'keys': ['k1', 'k2'], 'columns': [{'label': 'c', 'parts': {'k1': 0.4, 'k2': 0.6}}]}) == \
         [['label', 'k1', 'k2'], ['c', 0.4, 0.6]]
     assert chart_rows({'type': 'divergingBars', 'data': [{'label': 'a', 'value': -1}]}) == [['label', 'value'], ['a', -1]]
+
+
+def test_charts_row_slide_gets_one_sheet_per_chart(story_min, tmp_path):
+    out = build_handoff(story_min, {}, None, tmp_path)
+    wb = load_workbook(out / 'data.xlsx')
+    assert [n for n in wb.sheetnames if n.startswith('q2_by_product')] == ['q2_by_product_1', 'q2_by_product_2', 'q2_by_product_3']
+    header = lambda n: list(next(wb[n].iter_rows(values_only=True)))
+    assert header('q2_by_product_1') == ['label', 'value']
+    assert header('q2_by_product_2') == ['label', 'Product A', 'Product B', 'Product C']
+    assert header('q2_by_product_3') == ['label', 'Spend', 'Revenue']
+    assert [list(r) for r in wb['q2_by_product_1'].iter_rows(values_only=True)][1:] == [['Product A', 4055], ['Product B', 870], ['Product C', 500]]
+    assert [list(r) for r in wb['q2_by_product_2'].iter_rows(values_only=True)][1] == ['Spend', 75600, 140400, 54000]
+    assert (out / 'data' / 'q2_by_product_2.csv').read_text().splitlines()[0] == 'label,Product A,Product B,Product C'
+    assert sheet_name('a' * 40, 2) == 'a' * 29 + '_2'
+
+
+def test_charts_row_items_copied(story_min, tmp_path):
+    items = []
+    for i in range(1, 4):
+        p = tmp_path / f'c{i}.svg'
+        p.write_text(f'<svg id="{i}"/>')
+        items.append({'svg': p, 'png': tmp_path / f'c{i}.png'})
+    out = build_handoff(story_min, {'q2_by_product': {'items': items}}, None, tmp_path / 'h')
+    for i in range(1, 4):
+        assert (out / 'charts' / f'q2_by_product_{i}.svg').read_text() == f'<svg id="{i}"/>'
+        assert not (out / 'charts' / f'q2_by_product_{i}.png').exists()

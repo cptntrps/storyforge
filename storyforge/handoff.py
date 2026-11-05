@@ -68,6 +68,17 @@ LAYOUT_SKETCHES = {
 | TAKEAWAY (one line, under the chart)                         |
 | SOURCE                                                FOOTER |
 +--------------------------------------------------------------+""",
+    'charts_row': """\
++--------------------------------------------------------------+
+| TITLE (one or two lines)                                      |
+| subtitle                                                     |
+|--------------------+-------------------+---------------------|
+| CHART 1 takeaway   | CHART 2 takeaway  | CHART 3 takeaway    |
+|  chart (title,     |  chart (title,    |  chart (title,      |
+|  unit, annotation) |  unit, annotation)|  unit, annotation)  |
+| TAKEAWAY (one line)                               [CALLOUT]  |
+| SOURCE                                                FOOTER |
++--------------------------------------------------------------+""",
     'table': """\
 +--------------------------------------------------------------+
 | TITLE (one or two lines)                                      |
@@ -171,8 +182,19 @@ def chart_rows(chart):
     raise ValueError(f'chart type {kind!r} has no flat row form')
 
 
-def sheet_name(slide_id):
-    return slide_id[:SHEET_NAME_MAX]
+def sheet_name(slide_id, index=None):
+    """The sheet for a slide's chart or table: the id, or `<id>_<i>` for a charts[] slide, cut to Excel's 31 chars."""
+    if index is None:
+        return slide_id[:SHEET_NAME_MAX]
+    suffix = f'_{index}'
+    return slide_id[:SHEET_NAME_MAX - len(suffix)] + suffix
+
+
+def slide_charts(slide):
+    """The chart specs of a slide in order: charts[] when present, else the single chart."""
+    if slide.get('charts'):
+        return list(slide['charts'])
+    return [slide['chart']] if slide.get('chart') else []
 
 
 def data_sheets(story):
@@ -185,7 +207,10 @@ def data_sheets(story):
             numbers.append([s['id'], n.get('value'), n.get('metric'), n.get('base'), json.dumps(n.get('trace'), ensure_ascii=False)])
     sheets['numbers'] = numbers
     for s in story['slides']:
-        if s.get('chart'):
+        if s.get('charts'):
+            for i, c in enumerate(s['charts'], 1):
+                sheets[sheet_name(s['id'], i)] = chart_rows(c)
+        elif s.get('chart'):
             sheets[sheet_name(s['id'])] = chart_rows(s['chart'])
         elif s.get('table'):
             sheets[sheet_name(s['id'])] = [list(r) for r in s['table'].get('rows') or []]
@@ -212,16 +237,26 @@ def write_csvs(sheets, folder):
 
 
 def copy_charts(charts, folder):
-    """Copy {slide id: {'svg': Path, 'png': Path}} into folder as <id>.svg and <id>.png; skip paths that do not exist."""
+    """Copy rendered charts into folder; skip paths that do not exist.
+
+    `charts` maps a slide id to {'svg': Path, 'png': Path} for one chart, or to
+    {'items': [{'svg': Path, 'png': Path}, ...]} for a charts[] slide, copied as <id>_<i>.<ext>.
+    """
     folder.mkdir(parents=True, exist_ok=True)
     copied = []
     for sid, files in (charts or {}).items():
-        for ext in ('svg', 'png'):
-            src = files.get(ext) if isinstance(files, dict) else None
-            if src and Path(src).exists():
-                dst = folder / f'{sid}.{ext}'
-                shutil.copyfile(src, dst)
-                copied.append(dst)
+        if not isinstance(files, dict):
+            continue
+        targets = [(sid, files)]
+        if 'items' in files:
+            targets = [(f'{sid}_{i}', item) for i, item in enumerate(files['items'], 1)]
+        for name, item in targets:
+            for ext in ('svg', 'png'):
+                src = item.get(ext) if isinstance(item, dict) else None
+                if src and Path(src).exists():
+                    dst = folder / f'{name}.{ext}'
+                    shutil.copyfile(src, dst)
+                    copied.append(dst)
     return copied
 
 
@@ -244,6 +279,12 @@ def speaker_note(slide):
     return (slide.get('takeaway') or slide['title']).strip()
 
 
+def _chart_line(chart, sheet, file_stem):
+    ann = '; '.join(str(a.get('text', '')) for a in chart.get('annotations') or []) or 'none'
+    return (f"type {chart.get('type')}, title \"{chart.get('title', '')}\", unit {chart.get('unit', '')}, "
+            f"source {chart.get('source', '')}, annotation {ann}, data: see data.xlsx sheet {sheet}, rendered charts/{file_stem}.svg")
+
+
 def _slide_section(n, s):
     lines = [f"## Slide {n}: {s['id']}", '']
     lines.append(_md_table(['field', 'value'], [
@@ -255,11 +296,14 @@ def _slide_section(n, s):
     lines.append(f"- Takeaway: {s.get('takeaway') or 'none'}")
     lines.append(f"- Callout: {s.get('callout') or 'none'}")
     lines.append(f"- Layout sketch: see \"{s.get('layout')}\" under Layout sketches")
-    chart, table = s.get('chart'), s.get('table')
-    if chart:
-        ann = '; '.join(str(a.get('text', '')) for a in chart.get('annotations') or []) or 'none'
-        lines.append(f"- Chart: type {chart.get('type')}, title \"{chart.get('title', '')}\", unit {chart.get('unit', '')}, "
-                     f"source {chart.get('source', '')}, annotation {ann}, data: see data.xlsx sheet {sheet_name(s['id'])}, rendered charts/{s['id']}.svg")
+    charts, table = slide_charts(s), s.get('table')
+    if s.get('charts'):
+        lines.append(f'- Charts: {len(charts)}, left to right')
+        for i, c in enumerate(charts, 1):
+            stem = f"{s['id']}_{i}"
+            lines.append(f"- Chart {i}: takeaway \"{c.get('takeaway', '')}\", {_chart_line(c, sheet_name(s['id'], i), stem)}")
+    elif charts:
+        lines.append(f"- Chart: {_chart_line(charts[0], sheet_name(s['id']), s['id'])}")
     elif table:
         rows = table.get('rows') or []
         lines.append(f"- Table: {max(len(rows) - 1, 0)} rows plus header, data: see data.xlsx sheet {sheet_name(s['id'])}")

@@ -25,20 +25,51 @@ def _ul(items):
     return '<ul>' + ''.join(f'<li>{_e(i)}</li>' for i in items) + '</ul>'
 
 
-def _chart_figure(slide, charts):
-    chart = slide.get('chart') or {}
-    chart_title = chart.get('title') or 'Chart'
-    entry = charts.get(slide['id']) or {}
-    svg_path = entry.get('svg')
+def _inline_svg(slide_id, entry):
+    """The SVG file content for one chart entry, or None when the entry holds no svg."""
+    svg_path = (entry or {}).get('svg')
     if not svg_path:
-        return f'<figure class="chart-missing"><figcaption>{_e(chart_title)}</figcaption></figure>'
+        return None
     svg_path = Path(svg_path)
     if not svg_path.is_file():
-        raise FileNotFoundError(f'{slide["id"]}: chart svg {svg_path} does not exist')
+        raise FileNotFoundError(f'{slide_id}: chart svg {svg_path} does not exist')
     svg = _XML_PROLOG.sub('', svg_path.read_text(encoding='utf-8')).strip()
     if not svg.startswith('<svg'):
-        raise ValueError(f'{slide["id"]}: {svg_path} does not start with an <svg> element')
-    return f'<figure>{svg}<figcaption>{_e(chart_title)}</figcaption></figure>'
+        raise ValueError(f'{slide_id}: {svg_path} does not start with an <svg> element')
+    return svg
+
+
+def _figure(slide_id, chart, entry, caption=None):
+    chart_title = (chart or {}).get('title') or 'Chart'
+    svg = _inline_svg(slide_id, entry)
+    if svg is None:
+        return f'<figure class="chart-missing"><figcaption>{_e(chart_title)}</figcaption></figure>'
+    cap = f'<figcaption>{_e(caption)}</figcaption>' if caption else f'<figcaption>{_e(chart_title)}</figcaption>'
+    return f'<figure>{svg}{cap}</figure>'
+
+
+def _chart_figure(slide, charts):
+    return _figure(slide['id'], slide.get('chart'), charts.get(slide['id']))
+
+
+def _callout(slide):
+    return f'<p class="callout">{_e(slide["callout"])}</p>' if slide.get('callout') else ''
+
+
+def _charts_row(slide, charts):
+    specs = slide.get('charts') or []
+    items = (charts.get(slide['id']) or {}).get('items') or []
+    cols = []
+    for n, chart in enumerate(specs):
+        entry = items[n] if n < len(items) else None
+        svg = _inline_svg(slide['id'], entry)
+        takeaway = chart.get('takeaway')
+        cap = f'<figcaption class="chart-takeaway"><strong>{_e(takeaway)}</strong></figcaption>' if takeaway else ''
+        if svg is None:
+            cols.append(f'<figure class="chart-missing">{cap}<p class="chart-title">{_e(chart.get("title") or "Chart")}</p></figure>')
+        else:
+            cols.append(f'<figure>{cap}{svg}</figure>')
+    return f'{_callout(slide)}<div class="charts-row" style="--n:{len(specs)}">' + ''.join(cols) + '</div>'
 
 
 def _summary(story):
@@ -95,7 +126,9 @@ def _body(slide, story, charts):
     if layout == 'chart_left':
         return _chart_left(slide, charts)
     if layout == 'chart_full':
-        return _chart_figure(slide, charts)
+        return _callout(slide) + _chart_figure(slide, charts)
+    if layout == 'charts_row':
+        return _charts_row(slide, charts)
     if layout == 'table':
         return _table(slide)
     if layout == 'three_columns':

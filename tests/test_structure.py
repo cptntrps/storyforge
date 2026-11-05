@@ -27,7 +27,8 @@ def test_r03_counts_reasons(story_min):
 
 def test_r12_missing_parent(story_min):
     bad = copy.deepcopy(story_min)
-    bad['slides'][2]['parent'] = 'ghost'
+    detail = next(i for i, s in enumerate(bad['slides']) if s['kind'] == 'detail')
+    bad['slides'][detail]['parent'] = 'ghost'
     e = by_id(check_structure(bad))['R12']
     assert e.result == 'FAIL' and 'ghost' in e.evidence[0]['problem']
 

@@ -17,5 +17,6 @@ const opts = JSON.parse(optionsJson);
 const unit = String(opts.unit || '');
 const grouped = v => Number(v).toLocaleString('en-US', { maximumFractionDigits: 2 });
 if (unit.startsWith('$')) opts.fmtY = v => '$' + grouped(v);
-else if (unit === '%') opts.fmtY = v => grouped(v) + '%';
+// stackedBars receives shares in 0..1 and formats them itself; other builders get plain percent values.
+else if (unit === '%' && builder !== 'stackedBars') opts.fmtY = v => grouped(v) + '%';
 process.stdout.write(fn(opts));

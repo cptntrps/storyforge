@@ -31,10 +31,9 @@
           "subtitle": {"type": ["string", "null"]},
           "takeaway": {"type": ["string", "null"]},
           "callout": {"type": ["string", "null"]},
-          "layout": {"enum": ["summary", "chart_left", "chart_full", "table", "three_columns", "text_only"]},
-          "chart": {"type": ["object", "null"], "properties": {
-            "type": {"type": "string"}, "title": {"type": "string"}, "unit": {"type": "string"},
-            "source": {"type": "string"}, "annotations": {"type": "array"}}},
+          "layout": {"enum": ["summary", "chart_left", "chart_full", "charts_row", "table", "three_columns", "text_only"]},
+          "chart": {"$ref": "#/$defs/chart"},
+          "charts": {"type": "array", "minItems": 2, "maxItems": 3, "items": {"$ref": "#/$defs/chart"}},
           "table": {"type": ["object", "null"], "properties": {"rows": {"type": "array", "items": {"type": "array"}}}},
           "columns": {"type": "array", "items": {"type": "object", "properties": {
             "takeaway": {"type": "string"}, "figure": {"type": "string"}, "evidence": {"type": "string"}}}},
@@ -49,5 +48,11 @@
         }
       }
     }
+  }
+,
+  "$defs": {
+    "chart": {"type": ["object", "null"], "properties": {
+      "type": {"type": "string"}, "title": {"type": "string"}, "unit": {"type": "string"},
+      "source": {"type": "string"}, "annotations": {"type": "array"}, "takeaway": {"type": "string"}}}
   }
 }
