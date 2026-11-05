@@ -39,7 +39,12 @@ def titles_match(pptx, story):
     from .ingest.pptx import ingest_pptx
     deck = ingest_pptx(pptx)
     want = [s['title'].strip() for s in story['slides']]
-    got = [s['title'].strip() for s in deck['slides']]
+    got = []
+    for s in deck['slides']:
+        t = s['title'].strip()
+        if got and got[-1] == t:
+            continue  # a continuation slide (dense summary) repeats its title
+        got.append(t)
     ev = []
     if len(got) != len(want):
         ev.append({'problem': f'{len(got)} slides in the PPTX, {len(want)} in the story'})

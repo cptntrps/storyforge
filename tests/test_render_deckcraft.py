@@ -107,3 +107,17 @@ def test_summary_rows_and_bottom_stack_shapes(story_min, tmp_path):
     assert bar.left == body.left and bar.top == body.top and bar.height == body.height
     assert shapes['Take_1_Text'].left - (shapes['Take_1_Badge'].left + shapes['Take_1_Badge'].width) == 8 * 12700
     assert shapes['Table'].top > max(sh.top + sh.height for k, sh in shapes.items() if k.startswith('Chart_'))
+
+
+def test_dense_summary_continues_on_a_second_slide(story_min, tmp_path):
+    import copy, json, subprocess
+    s = copy.deepcopy(story_min)
+    long = 'Company X cut cost per order to $119 in June, 5% below the $125 target, through one product and one creator, so growth depends on it.'
+    for b in s['summary_blocks']:
+        b['bullets'] = [long] * 4
+    pptx = render_pptx(s, {}, tmp_path / 'out')
+    info = json.loads(subprocess.run(['deckcraft-cli', 'info', str(tmp_path / 'out' / 'deck.deckcraft')], capture_output=True, text=True).stdout)
+    n = len(info['slides']) if isinstance(info, dict) and 'slides' in info else len(info)
+    assert len(s['slides']) + 1 <= n <= len(s['slides']) + 2
+    from storyforge.gates import titles_match
+    assert titles_match(pptx, s) == []

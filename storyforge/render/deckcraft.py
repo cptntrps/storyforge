@@ -269,16 +269,8 @@ def _numbered_takeaway(d, x, w, y, n, text, size=12):
 
 # ---------- layouts ----------
 
-def _layout_summary(d, story, slide, charts, top, bottom):
-    """The reference rows: a navy message box (34%) and the points to its right, one row per block."""
-    g, c = d.g, d.c_
-    blocks = story['summary_blocks']
-    gap = g['gap']
-    msg_w = round(g['w0'] * 0.34, 2)
-    pts_x = round(g['x0'] + msg_w + 14, 2)
-    pts_w = round(g['x0'] + g['w0'] - pts_x, 2)
-    avail = bottom - top - gap * (len(blocks) - 1)
-    leads = [b.get('lead') or b['name'].replace('_', ' ').capitalize() for b in blocks]
+def _summary_fit(d, blocks, leads, avail, msg_w, pts_w):
+    """(size, lh, heights) for the smallest font step at which the rows fit, else None."""
     for size in (10.5, 10, 9.5, 9):
         lh = round(size * LINE, 2)
         hs = []
@@ -286,20 +278,43 @@ def _layout_summary(d, story, slide, charts, top, bottom):
             n_pts = d.lines('\n'.join(f'•  {t}' for t in b['bullets']), pts_w, size) if b.get('bullets') else 0
             n_lead = d.lines(lead, msg_w - 24, 12)
             hs.append(max(n_pts * lh + 10, n_lead * 21 + 12, 36))
-        if sum(hs) <= avail:
-            break
-    else:
-        raise ValueError(f"slide {slide['id']}: the summary rows do not fit at 9 pt; shorten the bullets")
-    scale = min(1.35, avail / sum(hs))
+        if sum(hs) + d.g['gap'] * (len(blocks) - 1) <= avail:
+            return size, lh, hs
+    return None
+
+
+def _layout_summary(d, story, slide, charts, top, bottom, blocks=None, first_index=0):
+    """The reference rows: a navy message box (30%) and the points to its right, one row per block.
+    Renders as many blocks as fit and returns the blocks left for a continuation slide (empty when all fit)."""
+    g, c = d.g, d.c_
+    blocks = story['summary_blocks'] if blocks is None else blocks
+    gap = g['gap']
+    msg_w = round(g['w0'] * 0.30, 2)
+    pts_x = round(g['x0'] + msg_w + 14, 2)
+    pts_w = round(g['x0'] + g['w0'] - pts_x, 2)
+    avail = bottom - top
+    leads = [b.get('lead') or b['name'].replace('_', ' ').capitalize() for b in blocks]
+    fit = _summary_fit(d, blocks, leads, avail, msg_w, pts_w)
+    k = len(blocks)
+    while fit is None and k > 1:
+        k -= 1
+        fit = _summary_fit(d, blocks[:k], leads[:k], avail, msg_w, pts_w)
+    if fit is None:
+        raise ValueError(f"slide {slide['id']}: summary block {blocks[0].get('name')!r} does not fit one slide at 9 pt; shorten its bullets")
+    size, lh, hs = fit
+    shown, rest = blocks[:k], blocks[k:]
+    scale = min(1.35, (avail - gap * (len(shown) - 1)) / sum(hs))
     y = top
-    for i, (b, lead, h) in enumerate(zip(blocks, leads, hs)):
+    for i, (b, lead, h) in enumerate(zip(shown, leads, hs)):
         h = round(h * scale, 2)
-        fill = c['accent'] if (b.get('name') == 'goals' or i == 0) else c['navy']
-        d.rect(g['x0'], y, msg_w, h, fill, text=lead, size=12, color=c['white'], bold=True, margin=12, name=f'Row_{i + 1}_Msg')
+        n = first_index + i + 1
+        fill = c['accent'] if (b.get('name') == 'goals' or n == 1) else c['navy']
+        d.rect(g['x0'], y, msg_w, h, fill, text=lead, size=12, color=c['white'], bold=True, margin=12, name=f'Row_{n}_Msg')
         if b.get('bullets'):
             d.bullets(pts_x, y + 5, pts_w, b['bullets'], size=size, color=c['ink2'], line_h=lh, h=h - 10,
-                      anchor='middle', name=f'Row_{i + 1}_Pts')
+                      anchor='middle', name=f'Row_{n}_Pts')
         y += h + gap
+    return rest
 
 
 def _side_text(d, slide, x, w, top, bottom):
@@ -358,8 +373,13 @@ def _layout_three_columns(d, story, slide, charts, top, bottom):
             y += 58
         if col.get('evidence'):
             k = d.lines(col['evidence'], col_w, 11)
-            d.text(x, y, col_w, col['evidence'], size=11, color=c['muted'], h=max(k * 19.25, bottom - y), anchor='top',
-                   name=f'Col_{i + 1}_Evidence')
+            h = round(max(k * 19.25, min(bottom - y, 4 * 19.25)), 2)
+            if y + h > bottom + 0.5:
+                raise ValueError(f'slide {slide["id"]}: column {i + 1} runs {y + h - bottom:.0f} pt past the body; '
+                                 'shorten the column text, the subtitle or the implication')
+            d.text(x, y, col_w, col['evidence'], size=11, color=c['muted'], h=h, anchor='top', name=f'Col_{i + 1}_Evidence')
+    # A table on a three-column slide has no region here: it follows on a continuation slide.
+    return ((slide.get('table') or {}).get('rows')) or []
 
 
 def _layout_text_only(d, story, slide, charts, top, bottom):
@@ -377,10 +397,14 @@ def _layout_charts_row(d, story, slide, charts, top, bottom):
     items = (charts.get(slide['id']) or {}).get('items') or []
     rows = ((slide.get('table') or {}).get('rows')) or []
     chart_bottom = bottom
+    spill = []
     if rows:
         head_h, row_h = 20, 16
         table_h = head_h + row_h * (len(rows) - 1)
-        chart_bottom = bottom - table_h - g['gap']
+        if bottom - table_h - g['gap'] - top < MIN_CHART_H + 20:
+            spill, rows = rows, []   # the table goes to a continuation slide; the charts keep the room
+        else:
+            chart_bottom = bottom - table_h - g['gap']
     n = len(specs)
     col_w = round((g['w0'] - g['gutter'] * (n - 1)) / n, 2)
     for i, spec in enumerate(specs):
@@ -389,9 +413,9 @@ def _layout_charts_row(d, story, slide, charts, top, bottom):
         if spec.get('takeaway'):
             y = _numbered_takeaway(d, x, col_w, y, i + 1, spec['takeaway']) + 10
         rect = [x, y, col_w, round(chart_bottom - y, 2)]
-        if rect[3] < 80:
+        if rect[3] < MIN_CHART_H:
             raise ValueError(f'slide {slide["id"]}: only {rect[3]:.0f} pt left for chart {i + 1}; '
-                             'drop the table, the subtitle or the implication')
+                             'shorten the subtitle or the implication')
         item = items[i] if i < len(items) and isinstance(items[i], dict) else {}
         png = item.get('png')
         if png and Path(png).exists():
@@ -400,7 +424,10 @@ def _layout_charts_row(d, story, slide, charts, top, bottom):
             _placeholder(d, rect, spec.get('title'), name=f'Chart_{i + 1}')
     if rows:
         d.table(g['x0'], round(bottom - table_h, 2), g['w0'], rows, size=9, row_h=row_h, head_h=head_h)
+    return spill
 
+
+MIN_CHART_H = 80
 
 LAYOUTS = {
     'summary': _layout_summary,
@@ -480,5 +507,22 @@ def render_pptx(story, charts, out_dir, style='default', name='deck'):
             d.text(g['x0'], sub_y, g['w0'], slide['subtitle'], size=13, color=c['ink2'], h=sub_h, anchor='top', name='Subtitle')
             top = max(g['body_y'], sub_y + sub_h + gap)
         bottom = _bottom_stack(d, slide, charts, footer_top)
-        LAYOUTS[slide['layout']](d, story, slide, charts, top, bottom)
+        if slide['layout'] == 'summary':
+            # A dense summary continues on a second slide with the same title; the gate collapses the pair.
+            rest = _layout_summary(d, story, slide, charts, top, bottom)
+            shown = len(story['summary_blocks']) - len(rest)
+            while rest:
+                d.slide(slide['title'], (slide.get('section') or 'Summary') + ' (continued)', callout=None, notes=None)
+                footer_top = d.footer(None, footer_text)
+                bottom = _bottom_stack(d, slide, charts, footer_top)
+                rest = _layout_summary(d, story, slide, charts, g['sub_y'], bottom, blocks=rest, first_index=shown)
+                shown = len(story['summary_blocks']) - len(rest)
+            continue
+        spill = LAYOUTS[slide['layout']](d, story, slide, charts, top, bottom)
+        if spill:
+            # The table did not fit under the charts: it follows on a slide with the same title (the gate collapses it).
+            d.slide(slide['title'], (slide.get('section') or '') + ' (data)', callout=None, notes=None)
+            footer_top = d.footer(slide.get('footnotes'), footer_text)
+            bottom2 = _bottom_stack(d, {'source': slide.get('source'), 'charts': None, 'id': slide['id']}, charts, footer_top)
+            _layout_table(d, story, {'id': slide['id'], 'table': {'rows': spill}}, charts, g['sub_y'], bottom2)
     return d.build(out_dir, name)
