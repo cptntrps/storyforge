@@ -60,7 +60,8 @@ class _Deck:
 
     def lines(self, text, width, size):
         """Estimated wrapped line count for text in a box `width` pt wide at `size` pt."""
-        per_line = max(8, int(self.st['chars_per_line'] * (self.st['title_size'] / size) * (width / self.g['w0'])))
+        # Average glyph width of the UI sans faces is about 0.55 em; the title keeps the stricter chars_per_line rule.
+        per_line = max(8, int(width / (0.55 * size)))
         return sum(max(1, math.ceil(len(t) / per_line)) for t in str(text).split('\n'))
 
     def _font(self, size, color, bold=False, align='left', anchor=None):
