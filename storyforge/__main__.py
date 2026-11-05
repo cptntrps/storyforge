@@ -99,8 +99,15 @@ def cmd_charts(a):
     from .charts import render_charts
     story = _valid('story', _load(a.story))
     res = render_charts(story, a.out, png=not a.no_png)
-    _dump({k: {kk: str(vv) for kk, vv in v.items()} for k, v in res.items()}, Path(a.out) / 'index.json')
-    print(f"{len([v for v in res.values() if 'svg' in v])} chart(s) rendered; {len([v for v in res.values() if 'table' in v])} as table")
+
+    def ser(v):
+        if 'items' in v:
+            return {'items': [ser(i) for i in v['items']]}
+        return {kk: (str(vv) if kk in ('svg', 'png') else vv) for kk, vv in v.items()}
+
+    _dump({k: ser(v) for k, v in res.items()}, Path(a.out) / 'index.json')
+    flat = [i for v in res.values() for i in (v['items'] if 'items' in v else [v])]
+    print(f"{len([v for v in flat if 'svg' in v])} chart(s) rendered; {len([v for v in flat if 'table' in v])} as table")
 
 
 def _charts_index(path):
@@ -109,7 +116,12 @@ def _charts_index(path):
     idx = Path(path) / 'index.json'
     if not idx.exists():
         return {}
-    return {k: {kk: Path(vv) for kk, vv in v.items() if kk in ('svg', 'png')} for k, v in _load(idx).items()}
+    def de(v):
+        if 'items' in v:
+            return {'items': [de(i) for i in v['items']]}
+        return {kk: (Path(vv) if kk in ('svg', 'png') else vv) for kk, vv in v.items()}
+
+    return {k: de(v) for k, v in _load(idx).items()}
 
 
 def cmd_build(a):
