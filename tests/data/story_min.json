@@ -330,7 +330,45 @@
         }
       ],
       "chart": null,
-      "table": null,
+      "table": {
+        "rows": [
+          [
+            "Product",
+            "Q2 spend",
+            "Q2 orders",
+            "CPO",
+            "Attributed revenue April to June"
+          ],
+          [
+            "Product A",
+            "$196k",
+            "5,255",
+            "$37",
+            "new in May"
+          ],
+          [
+            "Product B",
+            "$421k",
+            "2,610",
+            "$161",
+            "$710k to $851k"
+          ],
+          [
+            "Product C",
+            "$162k",
+            "1,500",
+            "$108",
+            "$190k to $23k"
+          ],
+          [
+            "Total",
+            "$779k",
+            "9,365",
+            "$83",
+            "$900k to $1.1M"
+          ]
+        ]
+      },
       "source": "Ad platform export, April to June 2025",
       "numbers": [
         {
@@ -370,7 +408,12 @@
       ],
       "covers": [
         "obj_one_product"
-      ]
+      ],
+      "footnotes": [
+        "Attributed revenue is the purchase value the ad platform credits to these campaigns; it is not total sales.",
+        "New customers are orders from prospecting campaigns; the sheet has no customer field."
+      ],
+      "implication": "Scale Product A and rebuild Product B prospecting in Q3 to get the most new customers within the $125 target."
     },
     {
       "id": "q2_detail",
@@ -622,5 +665,15 @@
         "obj_budget"
       ]
     }
-  ]
+  ],
+  "colors": {
+    "Product A": "#1f5fbf",
+    "Product B": "#c2410c",
+    "Product C": "#9333ea",
+    "All products": "#1f5fbf",
+    "Without Product A": "#6b7280",
+    "Spend": "#6b7280",
+    "Revenue": "#9333ea"
+  },
+  "footer": "Company X · Q2 2025 review"
 }
