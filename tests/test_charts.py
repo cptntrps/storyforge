@@ -39,3 +39,9 @@ def test_non_builder_becomes_table(story_min, tmp_path):
     s['slides'][1]['chart'] = {'type': 'pie', 'title': 'x', 'unit': '%', 'source': 's', 'rows': [['a', 1]], 'annotations': [{'index': 0, 'text': 't'}]}
     res = render_charts(s, tmp_path, png=False)
     assert res['q2_result']['table'] == [['a', 1]] and 'not a builder' in res['q2_result']['gap']
+
+
+def test_layout_sizes_apply_unless_given(story_min):
+    ch = story_min['slides'][1]['chart']
+    assert spec_for(ch, 'charts_row')['width'] == 420 and spec_for(ch, 'chart_left')['width'] == 700
+    assert spec_for(dict(ch, width=333), 'charts_row')['width'] == 333

@@ -9,19 +9,26 @@ from .checks.charts import BUILDERS, slide_charts
 PKG = Path(__file__).resolve().parent
 BRIDGE = PKG / 'charts_bridge.mjs'
 DEFAULT_SVG_CHARTS = Path.home() / 'repos/svg-charts/charts.js'
+# Pixel size per layout so chart text stays legible once the PNG is fitted into its column.
+LAYOUT_SIZES = {'charts_row': (420, 340), 'chart_left': (700, 340), 'chart_full': (900, 330)}
 PASS_THROUGH = ('title', 'unit', 'source', 'annotations', 'labels', 'series', 'data', 'items', 'groups', 'rows', 'columns',
                 'keys', 'colors', 'target', 'aLabel', 'bLabel', 'width', 'height', 'label')
 
 
-def spec_for(chart):
-    """The options object svg-charts receives: the story spec minus storyforge-only keys."""
-    return {k: v for k, v in chart.items() if k in PASS_THROUGH}
+def spec_for(chart, layout=None):
+    """The options object svg-charts receives: the story spec minus storyforge-only keys, sized for the layout."""
+    spec = {k: v for k, v in chart.items() if k in PASS_THROUGH}
+    w, h = LAYOUT_SIZES.get(layout, (600, 300))
+    spec.setdefault('width', w)
+    if chart.get('type') != 'dumbbell':
+        spec.setdefault('height', h)
+    return spec
 
 
-def render_svg(chart, svg_charts_path=DEFAULT_SVG_CHARTS):
+def render_svg(chart, svg_charts_path=DEFAULT_SVG_CHARTS, layout=None):
     if chart.get('type') not in BUILDERS:
         raise ValueError(f"{chart.get('type')!r} is not an svg-charts builder")
-    r = subprocess.run(['node', str(BRIDGE), str(svg_charts_path), chart['type'], json.dumps(spec_for(chart), ensure_ascii=False)],
+    r = subprocess.run(['node', str(BRIDGE), str(svg_charts_path), chart['type'], json.dumps(spec_for(chart, layout), ensure_ascii=False)],
                        capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError(f'svg-charts failed for {chart["type"]}: {r.stderr.strip()[-800:]}')
@@ -48,10 +55,10 @@ def render_charts(story, out_dir, svg_charts_path=DEFAULT_SVG_CHARTS, png=True):
     out.mkdir(parents=True, exist_ok=True)
     result = {}
 
-    def one(ref, ch):
+    def one(ref, ch, layout):
         if ch.get('type') not in BUILDERS:
             return {'table': ch.get('rows') or [], 'gap': f"{ch.get('type')} is not a builder; rendered as table"}
-        svg = render_svg(ch, svg_charts_path)
+        svg = render_svg(ch, svg_charts_path, layout)
         name = ref.replace('#', '_')
         svg_path = out / f'{name}.svg'
         svg_path.write_text(svg)
@@ -62,7 +69,7 @@ def render_charts(story, out_dir, svg_charts_path=DEFAULT_SVG_CHARTS, png=True):
 
     for s in story['slides']:
         if s.get('chart'):
-            result[s['id']] = one(s['id'], s['chart'])
+            result[s['id']] = one(s['id'], s['chart'], s.get('layout'))
         elif s.get('charts'):
-            result[s['id']] = {'items': [one(f"{s['id']}#{i}", ch) for i, ch in enumerate(s['charts'])]}
+            result[s['id']] = {'items': [one(f"{s['id']}#{i}", ch, s.get('layout')) for i, ch in enumerate(s['charts'])]}
     return result
