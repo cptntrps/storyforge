@@ -1,0 +1,495 @@
+[
+ {
+  "firm": "McKinsey",
+  "title": "Winners are investing more despite an uncertain macroeconomic outlook.",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Winners",
+    "role": "subject"
+   },
+   {
+    "text": "are investing",
+    "role": "verb"
+   },
+   {
+    "text": "more",
+    "role": "comparison"
+   },
+   {
+    "text": "despite an uncertain macroeconomic outlook",
+    "role": "condition"
+   }
+  ],
+  "pattern": "[Subject] [verb] [comparison] despite [condition].",
+  "why_it_works": "The \"despite\" clause turns a plain fact into a contrarian signal that tells the reader to act against the cycle.",
+  "watch_out": "Progressive verb (\"are investing\") and \"more\" has no number or baseline; the chart holds 69% vs 36%.",
+  "reuse_template": "[Top performers] [increase X] more despite [adverse condition].",
+  "url": "https://web.archive.org/web/20260410164241/https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-multiplier-effect-how-b2b-winners-grow",
+  "published": "2023-04-13"
+ },
+ {
+  "firm": "McKinsey",
+  "title": "Buyers expect omnichannel: Most decision makers use ten or more distinct channels to interact with suppliers along the journey.",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Buyers",
+    "role": "subject"
+   },
+   {
+    "text": "expect omnichannel",
+    "role": "verb"
+   },
+   {
+    "text": "Most decision makers",
+    "role": "subject"
+   },
+   {
+    "text": "use",
+    "role": "verb"
+   },
+   {
+    "text": "ten or more distinct channels",
+    "role": "measure"
+   },
+   {
+    "text": "to interact with suppliers",
+    "role": "consequence"
+   },
+   {
+    "text": "along the journey",
+    "role": "scope"
+   }
+  ],
+  "pattern": "[Subject] [verb + claim]: [Subject] [verb] [measure] [purpose] [scope].",
+  "why_it_works": "A short claim first, then the quantified proof after the colon. The reader gets the point and the evidence in one line.",
+  "watch_out": "Uses a colon to join two clauses, and the line runs to 19 words.",
+  "reuse_template": "[Audience] expect [behavior]: [Most of segment] [do] [n or more units] to [purpose] [scope].",
+  "url": "https://web.archive.org/web/20260515194609/https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/five-fundamental-truths-how-b2b-winners-keep-growing",
+  "published": "2024-09-12"
+ },
+ {
+  "firm": "McKinsey",
+  "title": "Volume growth has eluded consumer-packaged-goods companies in recent years.",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Volume growth",
+    "role": "subject"
+   },
+   {
+    "text": "has eluded",
+    "role": "verb"
+   },
+   {
+    "text": "consumer-packaged-goods companies",
+    "role": "scope"
+   },
+   {
+    "text": "in recent years",
+    "role": "scope"
+   }
+  ],
+  "pattern": "[Subject] [verb] [scope] [scope].",
+  "why_it_works": "A strong verb (\"eluded\") states a problem in nine words, and it sets up the price-versus-volume story.",
+  "watch_out": "No number in the title; the chart carries the price vs volume split (e.g. 2023: +7.4 price, -1.3 volume).",
+  "reuse_template": "[Desired metric] has eluded [segment] [in period].",
+  "url": "https://web.archive.org/web/20260119172548/https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/harnessing-revenue-growth-management-for-sustainable-success",
+  "published": "2024-12-18"
+ },
+ {
+  "firm": "McKinsey",
+  "title": "One in five respondents report that their organizations’ use of AI has been constrained by their operating costs, including tokens.",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "One in five respondents",
+    "role": "measure"
+   },
+   {
+    "text": "report",
+    "role": "verb"
+   },
+   {
+    "text": "that their organizations’ use of AI",
+    "role": "subject"
+   },
+   {
+    "text": "has been constrained",
+    "role": "verb"
+   },
+   {
+    "text": "by their operating costs, including tokens",
+    "role": "cause"
+   }
+  ],
+  "pattern": "[Measure of population] [verb] that [subject] [verb] [cause].",
+  "why_it_works": "\"One in five\" is easy to picture, and the cause (token costs) is specific and new.",
+  "watch_out": "Passive voice and a nested \"report that\" clause make the line long (20 words).",
+  "reuse_template": "[n in m] [population] report that [activity] has been constrained by [cause].",
+  "url": "https://web.archive.org/web/20261023073924/https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+  "published": "2026-08-25"
+ },
+ {
+  "firm": "McKinsey",
+  "title": "Larger companies are moving from experimentation to scaling AI agents much faster than smaller ones.",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Larger companies",
+    "role": "subject"
+   },
+   {
+    "text": "are moving from experimentation to scaling AI agents",
+    "role": "verb"
+   },
+   {
+    "text": "much faster than smaller ones",
+    "role": "comparison"
+   }
+  ],
+  "pattern": "[Subject] [verb: from state A to state B] [comparison].",
+  "why_it_works": "It frames the finding as a gap between two named groups, so the reader sees who is ahead at once.",
+  "watch_out": "Two -ing words (\"moving\", \"scaling\") and \"much faster\" has no number.",
+  "reuse_template": "[Segment A] are moving from [stage 1] to [stage 2] much faster than [segment B].",
+  "url": "https://web.archive.org/web/20261023073924/https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+  "published": "2026-08-25"
+ },
+ {
+  "firm": "BCG",
+  "title": "Only 5% of Companies Get Substantial Value from AI, While 60% Lag in Developing Critical AI Capabilities",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Only 5% of Companies",
+    "role": "measure"
+   },
+   {
+    "text": "Get",
+    "role": "verb"
+   },
+   {
+    "text": "Substantial Value from AI",
+    "role": "consequence"
+   },
+   {
+    "text": "While 60% Lag in Developing Critical AI Capabilities",
+    "role": "comparison"
+   }
+  ],
+  "pattern": "Only [x% of population] [verb] [outcome], While [y%] [lag on capability]",
+  "why_it_works": "Two hard numbers frame the full spread of the market: a thin top and a large tail. \"Only\" signals the gap.",
+  "watch_out": "Two clauses and an -ing word (\"Developing\"); \"Substantial\" is not defined in the title.",
+  "reuse_template": "Only [x%] of [population] [achieve outcome], While [y%] [lag in capability]",
+  "url": "https://web.archive.org/web/20261015084718id_/https://media-publications.bcg.com/The-Widening-AI-Value-Gap-Sept-2025.pdf",
+  "published": "2025-09"
+ },
+ {
+  "firm": "BCG",
+  "title": "70% of AI’s Value Is Concentrated in Core Businesses",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "70% of AI’s Value",
+    "role": "measure"
+   },
+   {
+    "text": "Is Concentrated",
+    "role": "verb"
+   },
+   {
+    "text": "in Core Businesses",
+    "role": "scope"
+   }
+  ],
+  "pattern": "[x% of value pool] [verb] [scope]",
+  "why_it_works": "It leads with the number. Eight words tell the reader where to point the AI investment.",
+  "watch_out": "Passive verb; the chart subtitle says this is value potential, not realized value.",
+  "reuse_template": "[x%] of [value pool] Is Concentrated in [area]",
+  "url": "https://web.archive.org/web/20261015084718id_/https://media-publications.bcg.com/The-Widening-AI-Value-Gap-Sept-2025.pdf",
+  "published": "2025-09"
+ },
+ {
+  "firm": "BCG",
+  "title": "To Get an AI Transformation Right, 70% of the Focus Should Be on People and Processes",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "To Get an AI Transformation Right",
+    "role": "condition"
+   },
+   {
+    "text": "70% of the Focus",
+    "role": "measure"
+   },
+   {
+    "text": "Should Be",
+    "role": "verb"
+   },
+   {
+    "text": "on People and Processes",
+    "role": "scope"
+   }
+  ],
+  "pattern": "[Condition], [measure] [verb] [scope]",
+  "why_it_works": "It gives a clear rule with a number, and it opens with the goal the reader already has.",
+  "watch_out": "It states a prescriptive model (BCG 10-20-70), not a measured result, so a reader can take it as data.",
+  "reuse_template": "To [achieve goal], [x%] of [effort] Should Be on [area]",
+  "url": "https://web.archive.org/web/20261001065137id_/https://web-assets.bcg.com/a5/37/be4ddf26420e95aa7107a35aae8d/bcg-wheres-the-value-in-ai.pdf",
+  "published": "2024-10"
+ },
+ {
+  "firm": "BCG",
+  "title": "Global AuM Grew by 12% in 2024 to $128 Trillion",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Global AuM",
+    "role": "subject"
+   },
+   {
+    "text": "Grew",
+    "role": "verb"
+   },
+   {
+    "text": "by 12%",
+    "role": "measure"
+   },
+   {
+    "text": "in 2024",
+    "role": "scope"
+   },
+   {
+    "text": "to $128 Trillion",
+    "role": "measure"
+   }
+  ],
+  "pattern": "[Subject] [verb] [rate] [period] [level]",
+  "why_it_works": "It gives both the rate and the absolute level, so the reader gets growth and scale in nine words.",
+  "watch_out": "Acronym (AuM) and no cause or implication; it reports, it does not argue.",
+  "reuse_template": "[Metric] Grew by [x%] in [period] to [absolute level]",
+  "url": "https://web.archive.org/web/20260228033747id_/https://web-assets.bcg.com/cc/0a/25876ea740168e908a8652e147d7/2025-gam-report-april-2025.pdf",
+  "published": "2025-04"
+ },
+ {
+  "firm": "BCG",
+  "title": "Profits Rose in 2024 as Revenue Growth Outstripped Costs",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Profits",
+    "role": "subject"
+   },
+   {
+    "text": "Rose",
+    "role": "verb"
+   },
+   {
+    "text": "in 2024",
+    "role": "scope"
+   },
+   {
+    "text": "as Revenue Growth Outstripped Costs",
+    "role": "cause"
+   }
+  ],
+  "pattern": "[Subject] [verb] [period] as [cause]",
+  "why_it_works": "It gives the result and the mechanism in nine words, so the chart only has to prove it.",
+  "watch_out": "No number for the rise; the PDF text uses an \"fi\" ligature in \"Profits\", normalized here.",
+  "reuse_template": "[Outcome metric] [moved] in [period] as [driver A] Outstripped [driver B]",
+  "url": "https://web.archive.org/web/20260228033747id_/https://web-assets.bcg.com/cc/0a/25876ea740168e908a8652e147d7/2025-gam-report-april-2025.pdf",
+  "published": "2025-04"
+ },
+ {
+  "firm": "BCG",
+  "title": "Challenger Banks’ Average Deposits Are Lower, but Growing Faster Than Traditional Retail Banks",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Challenger Banks’ Average Deposits",
+    "role": "subject"
+   },
+   {
+    "text": "Are Lower",
+    "role": "verb"
+   },
+   {
+    "text": "but Growing Faster Than Traditional Retail Banks",
+    "role": "comparison"
+   }
+  ],
+  "pattern": "[Subject] [verb: current state], but [trend comparison vs baseline]",
+  "why_it_works": "It admits the weak point (lower level) and then gives the stronger point (faster growth), which reads as balanced.",
+  "watch_out": "No numbers, and \"Growing\" is an -ing form; the baseline applies to both claims but appears only once.",
+  "reuse_template": "[Challenger metric] Is Lower, but Growing Faster Than [incumbent]",
+  "url": "https://web.archive.org/web/20260122140554id_/https://web-assets.bcg.com/04/4f/160d4f9d4d7e98ab417609b553d4/globalfintechreport-june2025.pdf",
+  "published": "2025-06"
+ },
+ {
+  "firm": "Bain",
+  "title": "Leaders run 8.5 times more AI experiments than laggards",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Leaders",
+    "role": "subject"
+   },
+   {
+    "text": "run",
+    "role": "verb"
+   },
+   {
+    "text": "8.5 times more AI experiments",
+    "role": "measure"
+   },
+   {
+    "text": "than laggards",
+    "role": "comparison"
+   }
+  ],
+  "pattern": "[Subject] [verb] [n× measure] [comparison]",
+  "why_it_works": "Nine words, an active verb, a precise multiple and a named baseline. It is the canonical comparison title.",
+  "watch_out": "\"Leaders\" and \"laggards\" are defined only in the body; the link to results is correlational.",
+  "reuse_template": "[Top group] [do] [n times more X] than [bottom group]",
+  "url": "https://www.bain.com/insights/ai-in-marketing-how-leaders-achieve-double-the-revenue-impact/",
+  "published": "2026-09-30"
+ },
+ {
+  "firm": "Bain",
+  "title": "Marketing leaders are two times more likely to realize revenue and cost benefits from AI initiatives",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Marketing leaders",
+    "role": "subject"
+   },
+   {
+    "text": "are",
+    "role": "verb"
+   },
+   {
+    "text": "two times more likely",
+    "role": "measure"
+   },
+   {
+    "text": "to realize revenue and cost benefits",
+    "role": "consequence"
+   },
+   {
+    "text": "from AI initiatives",
+    "role": "scope"
+   }
+  ],
+  "pattern": "[Subject] [verb] [n× more likely] [consequence] [scope]",
+  "why_it_works": "It ties the group to a business outcome (revenue and cost), not to an activity, with a clear multiple.",
+  "watch_out": "The baseline is implicit (\"more likely\" than whom?); \"two times\" is spelled out, not shown as a number.",
+  "reuse_template": "[Top group] are [n] times more likely to [realize outcome] from [initiative]",
+  "url": "https://www.bain.com/insights/ai-in-marketing-how-leaders-achieve-double-the-revenue-impact/",
+  "published": "2026-09-30"
+ },
+ {
+  "firm": "Bain",
+  "title": "About 80% of search users rely on AI summaries at least 40% of the time",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "About 80% of search users",
+    "role": "measure"
+   },
+   {
+    "text": "rely on AI summaries",
+    "role": "verb"
+   },
+   {
+    "text": "at least 40% of the time",
+    "role": "measure"
+   }
+  ],
+  "pattern": "[x% of population] [verb + object] [frequency threshold]",
+  "why_it_works": "It quantifies both reach and intensity, so the size of the behavior shift is clear without the chart.",
+  "watch_out": "Two percentages in one line, so a reader can mix up the 80% and the 40%.",
+  "reuse_template": "About [x%] of [users] rely on [new channel] at least [y%] of the time",
+  "url": "https://www.bain.com/insights/goodbye-clicks-hello-ai-zero-click-search-redefines-marketing/",
+  "published": "2025-02-19"
+ },
+ {
+  "firm": "Bain",
+  "title": "Sales growth was primarily driven by price in 2023",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Sales growth",
+    "role": "subject"
+   },
+   {
+    "text": "was primarily driven",
+    "role": "verb"
+   },
+   {
+    "text": "by price",
+    "role": "cause"
+   },
+   {
+    "text": "in 2023",
+    "role": "scope"
+   }
+  ],
+  "pattern": "[Subject] [verb] [cause] [period]",
+  "why_it_works": "It isolates the single driver behind a headline metric, which is the decomposition an executive asks for first.",
+  "watch_out": "Passive voice and no number; the share of growth from price lives only in the chart.",
+  "reuse_template": "[Metric] growth was primarily driven by [driver] in [period]",
+  "url": "https://www.bain.com/insights/consumer-products-report-2024-resetting-the-growth-agenda/",
+  "published": "2024-02-14"
+ },
+ {
+  "firm": "Bain",
+  "title": "Customer switching rates have risen as digital tools and more transparent pricing make it easier to defect",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Customer switching rates",
+    "role": "subject"
+   },
+   {
+    "text": "have risen",
+    "role": "verb"
+   },
+   {
+    "text": "as digital tools and more transparent pricing make it easier to defect",
+    "role": "cause"
+   }
+  ],
+  "pattern": "[Subject] [verb] as [cause]",
+  "why_it_works": "It pairs the trend with its two causes, so the reader knows what to address, not only what happened.",
+  "watch_out": "No number for the rise, and the long cause clause makes the line 17 words.",
+  "reuse_template": "[Risk metric] has risen as [driver A] and [driver B] make it easier to [undesired action]",
+  "url": "https://www.bain.com/insights/after-years-of-customer-loyalty-programs-in-insurance-what-is-next/",
+  "published": "2024-04-12"
+ },
+ {
+  "firm": "Bain",
+  "title": "Firms that obtain price increases will realize stronger margins",
+  "kind": "exhibit title",
+  "parts": [
+   {
+    "text": "Firms that obtain price increases",
+    "role": "subject"
+   },
+   {
+    "text": "will realize",
+    "role": "verb"
+   },
+   {
+    "text": "stronger margins",
+    "role": "consequence"
+   }
+  ],
+  "pattern": "[Subject defined by action] [verb] [consequence]",
+  "why_it_works": "The subject is defined by an action the reader controls, so the title reads as a direct call to act.",
+  "watch_out": "Future tense and no number; \"stronger\" needs the chart to show how much.",
+  "reuse_template": "[Firms that do X] will realize [better outcome]",
+  "url": "https://www.bain.com/insights/expanding-profit-margin-through-intelligent-pricing-commercial-excellence-agenda-2025/",
+  "published": "2025-04-23"
+ }
+]

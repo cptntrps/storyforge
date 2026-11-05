@@ -1,0 +1,262 @@
+[
+ {
+  "element": "Title",
+  "source_name": "Slideworks (ex-McKinsey consultants), How McKinsey Consultants Make Presentations",
+  "url": "https://slideworks.io/resources/how-mckinsey-consultants-make-presentations",
+  "quote": "When you become a management consultant, one of the first things you are taught is that the title of a slide should always be an 'action title' that articulates the key takeaway or 'so-what' of the slide.",
+  "what": "The action title is the slide title that states the key takeaway, or so-what, of the slide.",
+  "job": "Let a busy reader get the slide's message without study of the slide body.",
+  "length": "Two lines or less, same font size on all slides.",
+  "test": "Read only the action titles in order: they must flow like a story and be readable on their own."
+ },
+ {
+  "element": "Title",
+  "source_name": "Penn State, How to Create an Assertion-Evidence Presentation (Michael Alley's assertion-evidence approach)",
+  "url": "https://cpb-us-e1.wpmucdn.com/sites.psu.edu/dist/7/13153/files/2008/10/Assertion-Evidence-Slides-Instruction_Set.pdf",
+  "quote": "Assertion-Evidence is a style of presentation in which a sentence headline states the main message of the slide-this is the “assertion” part.",
+  "what": "The headline is one sentence, the assertion, that states the main message of the slide.",
+  "job": "State the claim that the visual evidence on the slide then supports.",
+  "length": "One sentence, no more than two lines.",
+  "test": "Is the headline one full sentence that makes a claim, not a topic phrase?"
+ },
+ {
+  "element": "Title",
+  "source_name": "Barbara Minto, The Pyramid Principle, Part 4 'Logic in Presentation' (as reviewed by StrategyU)",
+  "url": "https://strategyu.co/pyramid-principle-4/",
+  "quote": "For the text slides that remain, the rule is statements rather than captions. Her example is two words against four: “Sales outlook” versus “Sales outlook is favorable.”",
+  "what": "The slide title is a statement of the point, not a caption that names a topic.",
+  "job": "Leave the audience no room to assume a meaning other than the intended one.",
+  "length": null,
+  "test": "Does the title make a statement (\"Sales outlook is favorable\"), not a caption (\"Sales outlook\")?"
+ },
+ {
+  "element": "Title",
+  "source_name": "Antoine Buteau, Lessons from Gene Zelazny (Say It With Charts)",
+  "url": "https://www.antoinebuteau.com/lessons-from-gene-zelazny/",
+  "quote": "Use a title that conveys the chart’s takeaway rather than merely naming the data; Zelazny’s chart portfolio includes message titles for its examples.",
+  "what": "A message title conveys the chart's takeaway instead of only naming the data.",
+  "job": "Tell the audience what to learn from the chart.",
+  "length": null,
+  "test": "Does the title state a takeaway, or does it only name the data?"
+ },
+ {
+  "element": "Title",
+  "source_name": "Office for National Statistics (ONS) Digital Blog, Say what you see: the way we write chart titles is changing",
+  "url": "https://digitalblog.ons.gov.uk/2019/01/28/say-what-you-see-the-way-we-write-chart-titles-is-changing",
+  "quote": "We should be aiming to have chart titles that sum up the main message shown in the chart in 10 words or less.",
+  "what": "A chart title sums up the main message that the chart shows.",
+  "job": "Prime the reader to see the intended trend and avoid misinterpretation.",
+  "length": "10 words or less.",
+  "test": "Does the title state the chart's main message in 10 words or less?"
+ },
+ {
+  "element": "Subtitle",
+  "source_name": "Slideworks (ex-McKinsey consultants), How McKinsey Consultants Make Presentations",
+  "url": "https://slideworks.io/resources/how-mckinsey-consultants-make-presentations",
+  "quote": "Subheadings are meant to give a clear summary of the data used to prove the insight in the action title, or alternatively add some nuance to the main takeaway. Keep it crisp and short.",
+  "what": "The subheading summarises the data that proves the action title, or adds nuance to it.",
+  "job": "Tell the reader what data the slide uses to prove the title.",
+  "length": "Crisp and short, e.g. \"Sales of personal luxury goods, US Market, $ billions\".",
+  "test": "Does the subheading name the data used to prove the title's insight?"
+ },
+ {
+  "element": "Subtitle",
+  "source_name": "The Analyst Academy, Takeaway Boxes: When To Use Them And When To Avoid Them",
+  "url": "https://www.theanalystacademy.com/takeaway-boxes-when-to-use/",
+  "quote": "They’re usually more specific than the title and they tell us where to look to better understand the main message of the slide.",
+  "what": "The subtitle is a more specific line under the title that directs attention.",
+  "job": "Show the audience where to look to understand the title's message.",
+  "length": null,
+  "test": "Is the subtitle more specific than the title, and does it point to the key part of the slide?"
+ },
+ {
+  "element": "Subtitle",
+  "source_name": "Office for National Statistics (ONS) Digital Blog, Say what you see: the way we write chart titles is changing",
+  "url": "https://digitalblog.ons.gov.uk/2019/01/28/say-what-you-see-the-way-we-write-chart-titles-is-changing",
+  "quote": "This doesn’t mean we want to lose the statistical information, this approach still includes a short subtitle outlining the data, geography and time period.",
+  "what": "The subtitle is a short line that gives the chart's data, geography and time period.",
+  "job": "Keep the statistical information that the message title leaves out.",
+  "length": "Short.",
+  "test": "Does the subtitle state the data, the geography and the time period?"
+ },
+ {
+  "element": "Subtitle",
+  "source_name": "Mark Nold, The Anatomy of a Slide: The Basics",
+  "url": "https://marknold.substack.com/p/the-anatomy-of-a-slide-the-basics",
+  "quote": "Sits below the Headline and summarises the content of the slide below;",
+  "what": "The subheading sits below the headline and summarises the content of the slide.",
+  "job": "Explain clearly and quickly the point the data below makes.",
+  "length": "Two lines maximum.",
+  "test": "Does it summarise the data below and the conclusion, with no new data and no emotive language?"
+ },
+ {
+  "element": "Subtitle",
+  "source_name": "PPT PowerTools, The anatomy of a consulting slide",
+  "url": "https://pptpowertools.com/the-anatomy-of-a-consulting-slide/",
+  "quote": "As seen above, the subtitle provides additional context and insights to complement a descriptive title. Its purpose is to deepen the audience’s understanding of the slide’s focus, ensuring clarity and precision.",
+  "what": "The subtitle adds context and insight to complement a descriptive title.",
+  "job": "Deepen the audience's understanding of the slide's focus.",
+  "length": null,
+  "test": "If the title is already an action title, omit the subtitle; the source says it can dilute the impact."
+ },
+ {
+  "element": "Takeaway",
+  "source_name": "Management Consulted, Consulting Slide Deck: Do's and Don'ts",
+  "url": "https://managementconsulted.com/consulting-slide-deck/",
+  "quote": "Charts should include key takeaways. While great graphics should speak for themselves, skilled consultants include a summary, or key takeaway, from the chart on the slide.",
+  "what": "A key takeaway is a short summary, on the slide, of what the chart shows.",
+  "job": "State the key insight that the chart represents, next to the chart.",
+  "length": null,
+  "test": "Is there a stated insight beside the chart, or must the reader infer it?"
+ },
+ {
+  "element": "Takeaway",
+  "source_name": "StrategyU, The 14 Slide Layouts That Consulting Firms Use for Everything",
+  "url": "https://strategyu.co/slide-layouts/",
+  "quote": "A chart takes up the left two-thirds of the slide. The right third holds a text box with the takeaway or recommendation. A callout arrow or highlight on the chart draws the eye to the specific data point that matters.",
+  "what": "A takeaway text box sits beside the chart, with callouts that mark the data it refers to.",
+  "job": "Draw the eye to the specific data point that supports the insight.",
+  "length": null,
+  "test": "Does each callout point to a specific bar, line or data point, not to the chart in general?"
+ },
+ {
+  "element": "Takeaway",
+  "source_name": "Penn State, How to Create an Assertion-Evidence Presentation (Michael Alley's assertion-evidence approach)",
+  "url": "https://cpb-us-e1.wpmucdn.com/sites.psu.edu/dist/7/13153/files/2008/10/Assertion-Evidence-Slides-Instruction_Set.pdf",
+  "quote": "If necessary, add a call-out (words or phrases used to clarify images) to improve the viewer’s understanding of the visual evidence.",
+  "what": "A call-out is a word or phrase placed on the visual to clarify it.",
+  "job": "Improve the viewer's understanding of the visual evidence.",
+  "length": "One or two call-outs per slide; three or more clutter the slide.",
+  "test": "Are there two call-outs or fewer, and does each clarify the visual?"
+ },
+ {
+  "element": "Takeaway",
+  "source_name": "Slideworks (ex-McKinsey consultants), How McKinsey Consultants Make Presentations",
+  "url": "https://slideworks.io/resources/how-mckinsey-consultants-make-presentations",
+  "quote": "Add call-outs, highlights or similar wherever it makes sense to make the so-what of that visual more clear.",
+  "what": "Call-outs and highlights are marks on a visual that make its so-what clear.",
+  "job": "Make the so-what of the visual clearer.",
+  "length": null,
+  "test": "Does each call-out make the visual's so-what clearer?"
+ },
+ {
+  "element": "Chart",
+  "source_name": "Slideworks (ex-McKinsey consultants), How McKinsey Consultants Make Presentations",
+  "url": "https://slideworks.io/resources/how-mckinsey-consultants-make-presentations",
+  "quote": "The slide's main insight, articulated in the action title, should be supported by all relevant information presented in the simplest possible way.",
+  "what": "The slide body is the data that proves the insight stated in the action title.",
+  "job": "Support the title's insight with relevant information in the simplest possible way.",
+  "length": null,
+  "test": "Remove all facts and figures that do not directly support the insight in the title."
+ },
+ {
+  "element": "Chart",
+  "source_name": "Michael Alley, assertion-evidence.com (Assertion-Evidence Approach)",
+  "url": "https://www.assertion-evidence.com/",
+  "quote": "In this approach, you build your presentations on succinct messages (assertions), rather than phrase topics. Moreover, to support those messages, you provide visual evidence rather than bulleted lists.",
+  "what": "The slide body is visual evidence that supports the assertion in the headline.",
+  "job": "Support the headline's message with visual evidence, not a bulleted list.",
+  "length": null,
+  "test": "Is the body visual evidence (chart, photo, diagram), not a bulleted list?"
+ },
+ {
+  "element": "Chart",
+  "source_name": "Barbara Minto, The Pyramid Principle, Part 4 'Logic in Presentation' (as reviewed by StrategyU)",
+  "url": "https://strategyu.co/pyramid-principle-4/",
+  "quote": "Work out what question the chart is answering. Put the answer in the title. Choose the chart form last, once you know what it has to show.",
+  "what": "The exhibit answers one question, and its answer goes in the title.",
+  "job": "Show the answer that the title states.",
+  "length": null,
+  "test": "Did you choose the chart form only after you knew the question and its answer?"
+ },
+ {
+  "element": "Chart",
+  "source_name": "Antoine Buteau, Lessons from Gene Zelazny (Say It With Charts)",
+  "url": "https://www.antoinebuteau.com/lessons-from-gene-zelazny/",
+  "quote": "Zelazny’s chart method begins with the message, then identifies the comparison and selects the chart form.",
+  "what": "The chart is the form selected to express the message and its comparison type.",
+  "job": "Express the comparison behind the message in a fitting chart form.",
+  "length": null,
+  "test": "Name the comparison (component, item, time series, frequency distribution, correlation) before you pick the chart form."
+ },
+ {
+  "element": "Bottom line",
+  "source_name": "The Analyst Academy, Takeaway Boxes: When To Use Them And When To Avoid Them",
+  "url": "https://www.theanalystacademy.com/takeaway-boxes-when-to-use/",
+  "quote": "Consulting firms love to use takeaway boxes. That small rectangular box of text at the bottom of a slide sometimes also called a kicker.",
+  "what": "The takeaway box, or kicker, is a small box of text at the bottom of the slide.",
+  "job": "Call out a second-order insight that supports the title, or set up the next slide.",
+  "length": null,
+  "test": "It is not the main takeaway (that is the title), adds no new information, and appears on fewer than 20% of slides."
+ },
+ {
+  "element": "Bottom line",
+  "source_name": "Slideworks (ex-McKinsey consultants), How to Write Key Takeaway Slides",
+  "url": "https://slideworks.io/resources/how-to-write-key-takeaway-slides-with-examples-and-free-template",
+  "quote": "A small rectangular box of text at the bottom of a slide, sometimes also called a ‘kicker box’.",
+  "what": "A key takeaway box, or kicker box, is a small text box at the bottom of one slide.",
+  "job": "Highlight a granular point on that one slide, not the whole presentation.",
+  "length": null,
+  "test": "Does the box relate only to this slide, not to the whole presentation?"
+ },
+ {
+  "element": "Bottom line",
+  "source_name": "Consultant's Mind, Better PowerPoint: 6 Ways to Make Your Point",
+  "url": "https://www.consultantsmind.com/2012/04/30/ppt/",
+  "quote": "Emphasize your point by using different colors, or using a call-out box (sometimes called “kicker box”) to reiterate the point at the bottom of the slide",
+  "what": "A kicker box is a call-out box at the bottom of the slide.",
+  "job": "Reiterate the slide's point so that it answers \"What's the so what?\"",
+  "length": null,
+  "test": "If a manager asks \"What's the so what?\", does the kicker give the answer?"
+ },
+ {
+  "element": "Footnotes",
+  "source_name": "PPT PowerTools, The anatomy of a consulting slide",
+  "url": "https://pptpowertools.com/the-anatomy-of-a-consulting-slide/",
+  "quote": "The footnote is a vital component of the slide, providing the foundation for its credibility. It is used to cite sources, offer clarifications, or include disclaimers, ensuring transparency and professionalism.",
+  "what": "The footnote cites sources and gives clarifications or disclaimers for the slide.",
+  "job": "Give the slide its credibility through transparent sources.",
+  "length": "Do not overwhelm it with excessive detail.",
+  "test": "Is all data on the slide backed by a source citation in a standard format?"
+ },
+ {
+  "element": "Footnotes",
+  "source_name": "Ampler, Insert and update footnotes in PowerPoint",
+  "url": "https://ampler.io/guides-and-tutorials/insert-and-update-footnotes/",
+  "quote": "Every data point and non-obvious claim carries a footnote - Source: for the provenance of data, Note: for methodology, assumptions, or definitions.",
+  "what": "Footnotes are Source: lines for data provenance and Note: lines for method or definitions.",
+  "job": "Make the analysis defensible in senior review.",
+  "length": "Short: a source or a caveat, not a paragraph; a citation, not a sentence.",
+  "test": "Does every data point and non-obvious claim have a Source: or Note: footnote?"
+ },
+ {
+  "element": "Footnotes",
+  "source_name": "Consultport, Consulting Presentation Checklist: Make Sure to Include These 7 Elements",
+  "url": "https://consultport.com/succeed-as-consultant/consulting-presentation-checklist-make-sure-to-include-these-7-elements/",
+  "quote": "Now, on the bottom left corner, consulting slides should include the source and date.",
+  "what": "The source and date line sits in the bottom left corner of the slide.",
+  "job": "Name who made the slide and where its data comes from.",
+  "length": null,
+  "test": "Does the bottom left corner show the source and date, with footnotes for extra remarks?"
+ },
+ {
+  "element": "Footnotes",
+  "source_name": "Mark Nold, The Anatomy of a Slide: The Basics",
+  "url": "https://marknold.substack.com/p/the-anatomy-of-a-slide-the-basics",
+  "quote": "Use for sources or citations. Can be used for qualifiers that must accompany the data;",
+  "what": "Footnotes hold sources, citations and qualifiers that must go with the data.",
+  "job": "Increase transparency and the reader's trust in the data.",
+  "length": null,
+  "test": "Use one consistent format: \"Source Organisation Name (Date). Document Name or URL.\""
+ },
+ {
+  "element": "Footnotes",
+  "source_name": "Slideworks (ex-McKinsey consultants), How McKinsey Consultants Make Presentations",
+  "url": "https://slideworks.io/resources/how-mckinsey-consultants-make-presentations",
+  "quote": "Each slide should also have a slide number and a source in the bottom section that provides the source of the data used.",
+  "what": "The source line in the bottom section gives the source of the data used.",
+  "job": "Show where the slide's data comes from.",
+  "length": null,
+  "test": "Does every slide have a source and a slide number in the bottom section?"
+ }
+]

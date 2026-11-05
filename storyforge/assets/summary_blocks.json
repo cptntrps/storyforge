@@ -1,0 +1,7 @@
+[
+  {"order": 1, "name": "goals", "purpose": "What today decides: the meeting goal, the main goal and the subgoals the deck serves.", "max_bullets": 5},
+  {"order": 2, "name": "period_result", "purpose": "What the period delivered against the target, in observed figures.", "max_bullets": 4},
+  {"order": 3, "name": "what_we_see", "purpose": "The drivers and limits behind the result; the levers and the risks.", "max_bullets": 4},
+  {"order": 4, "name": "what_we_propose", "purpose": "The recommendation and its conditions, traced to the evidence above.", "max_bullets": 4},
+  {"order": 5, "name": "what_we_need_today", "purpose": "The decisions requested, each with an owner.", "max_bullets": 4}
+]

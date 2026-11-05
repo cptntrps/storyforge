@@ -1,0 +1,62 @@
+{
+ "version": "1.1.0",
+ "scope": "All client-facing titles, executive summaries, findings, scenario explanations and recommendations",
+ "structures": {
+  "slide_title": "Subject + action + object + business impact, in natural English word order.",
+  "main_bullet": "A complete thought stating the finding, quantified comparison and business implication.",
+  "supporting_bullet": "A complete thought providing evidence or a material qualification for its parent claim.",
+  "action_bullet": "An accountable owner, a concrete action and the intended business outcome."
+ },
+ "rules": [
+  "Use concise bullets and sub-bullets with complete thoughts; avoid chopped sentence fragments and long prose blocks.",
+  "State the relevant period, metric and comparison benchmark explicitly.",
+  "Give every number a purpose: explain what it means for the business or decision.",
+  "Name the benchmark value in relative comparisons, even if it appeared earlier: 5% below the $125 target.",
+  "When describing concentration or dependence, quantify both outcome share and spend share.",
+  "Make recommendations follow from the evidence and name who should act.",
+  "Distinguish observed results, modeled impacts, hypotheses and experiments not yet run.",
+  "Use supporting bullets for evidence and limitations that change interpretation, not disconnected facts.",
+  "Do not add verbal transitions when the logical connection is already clear.",
+  "Choose each slide layout to fit its argument; title, subtitle and chart are not a mandatory template.",
+  "Use callouts, takeaways and evidence comparisons to make the implication visible alongside the analysis.",
+  "Every closing decision must follow from evidence or tradeoffs already introduced; connect it explicitly to those earlier findings.",
+  "Remove unused chart or layout space when it separates evidence from the decision; do not add decorative filler."
+ ],
+ "avoid_phrases": [
+  "the next priority is",
+  "this means that",
+  "therefore",
+  "it is important to note",
+  "in order to"
+ ],
+ "examples": {
+  "weak_comparison": "June CPO is 5% below target.",
+  "preferred_comparison": "June CPO reached $119, 5% below the $125 target.",
+  "weak_fact": "Q2 sample CPO was $167.",
+  "preferred_fact": "Q2 sample CPO was $167, 34% above the $125 target, so June's improvement alone does not establish sustained performance.",
+  "preferred_hierarchy": [
+   {
+    "bullet": "June CPO reached $119, 5% below the $125 target, but performance depended heavily on Product A.",
+    "support": [
+     "Product A generated 55% of June orders on 28% of spend.",
+     "The remaining products averaged $192 CPO, 53% above the $125 target."
+    ]
+   },
+   {
+    "bullet": "Company X should test Product A's scalability and improve the remaining 72% of spend to reduce dependence on one product.",
+    "support": []
+   }
+  ]
+ },
+ "semantic_review": [
+  "Does each main claim answer 'so what?' without requiring the reader to infer the implication?",
+  "Can the reader understand each comparison without searching elsewhere for the benchmark?",
+  "Do sub-bullets directly substantiate their parent claim?",
+  "Are concentration claims quantified with both outcomes and resources?",
+  "Does each recommendation identify an action and intended outcome without presenting modeled gains as facts?",
+  "Are the bullets concise, grammatically complete thoughts?",
+  "Does the closing decision trace to a prior finding, tradeoff or test?",
+  "Does the layout help the reader connect evidence and implication without unnecessary gaps?"
+ ],
+ "automation_limit": "Build checks enforce prohibited filler and explicit target values in literal percentage comparisons. Logical quality, complete thoughts and evidentiary support require the semantic review; a passing check does not certify those properties."
+}

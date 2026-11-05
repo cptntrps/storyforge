@@ -78,7 +78,7 @@
                   {"takeaway": "Gate the untested", "figure": "3 gates", "evidence": "Readouts on 4 Aug, 25 Aug, 15 Sep"},
                   {"takeaway": "Name owners", "figure": "1 per gate", "evidence": "Decision owner before each release"}],
       "chart": null, "table": null, "source": "Plan model over April to June rows",
-      "numbers": [{"value": 270, "metric": "weekly spend, $k", "base": null, "trace": {"where": {"scenario": "plan"}, "column": "spend_k", "agg": "value"}},
+      "numbers": [{"value": 270000, "metric": "weekly spend, $", "base": null, "trace": {"where": {"scenario": "plan"}, "column": "spend", "agg": "value"}},
                   {"value": 227, "metric": "added weekly new customers", "base": "late-June run rate", "trace": {"where": {"scenario": "plan"}, "column": "added_orders", "agg": "value"}},
                   {"value": 125, "metric": "cost-per-order target, $", "base": null, "trace": {"where": {"param": "cpo_target"}, "column": "value", "agg": "value"}}],
       "covers": ["obj_budget"]

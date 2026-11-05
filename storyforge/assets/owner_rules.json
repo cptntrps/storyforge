@@ -1,0 +1,20 @@
+[
+  {"id": "OR01", "date": "2026-10-30", "applies_to": "title", "rule": "Every slide title is one SVOM sentence: subject, verb, object, so-what (the measure). The rule is mandatory."},
+  {"id": "OR02", "date": "2026-10-30", "applies_to": "narrative", "rule": "Every slide follows data, analysis, insight, so what, takeaway."},
+  {"id": "OR03", "date": "2026-10-30", "applies_to": "structure", "rule": "The deck is key slides backed by data; each key slide can have detail slides behind it."},
+  {"id": "OR04", "date": "2026-10-30", "applies_to": "layout", "rule": "Build slides in slide format first (DeckCraft), so every slide fits a slide, then move to HTML."},
+  {"id": "OR05", "date": "2026-10-30", "applies_to": "layout", "rule": "Use callouts to draw the eye and takeaways; the whole must not be wordy."},
+  {"id": "OR06", "date": "2026-10-30", "applies_to": "chart", "rule": "Every chart has a title and units."},
+  {"id": "OR07", "date": "2026-10-30", "applies_to": "title", "rule": "Comparisons keep parallelism: the same measure, the same base, the same order, for each item compared."},
+  {"id": "OR08", "date": "2026-10-30", "applies_to": "title", "rule": "Always give the number, the quantity and the share of the total, and how they relate."},
+  {"id": "OR09", "date": "2026-10-30", "applies_to": "narrative", "rule": "The answer is not necessarily yes or no; show the tradeoffs and the considerations behind each option."},
+  {"id": "OR10", "date": "2026-10-30", "applies_to": "narrative", "rule": "Falsify every claim: name the least data that disproves it; do not recommend on an unvalidated trend."},
+  {"id": "OR11", "date": "2026-10-30", "applies_to": "rubric", "rule": "Test criteria come from McKinsey and BCG primary material, not from one secondary source."},
+  {"id": "OR12", "date": "2026-10-30", "applies_to": "title", "rule": "No 'xxxx: yyyy' titles; go straight to the message; adopt the key message and detail arrangement."},
+  {"id": "OR13", "date": "2026-10-30", "applies_to": "title", "rule": "Titles are not wordy: at most two lines."},
+  {"id": "OR14", "date": "2026-10-31", "applies_to": "summary", "rule": "Answer-first executive summary; each block's bullets are the titles of the slides that support it, word for word. Reading only the titles tells the story."},
+  {"id": "OR15", "date": "2026-10-31", "applies_to": "narrative", "rule": "No figure or assumption from outside the data. Where data is missing, state the gap and ask."},
+  {"id": "OR16", "date": "2026-10-31", "applies_to": "prose", "rule": "ASD-STE100 style, no em dashes, no filler phrases."},
+  {"id": "OR17", "date": "2026-11-01", "applies_to": "summary", "rule": "The executive summary opens with a strategic goals block: the meeting goal, the main goal, and the subgoals. The period result comes second."},
+  {"id": "OR18", "date": "2026-11-01", "applies_to": "narrative", "rule": "Say which period a figure describes (June, not the quarter average) and distinguish observed from modeled."}
+]
