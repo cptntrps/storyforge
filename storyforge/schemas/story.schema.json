@@ -43,7 +43,7 @@
           "numbers": {"type": "array", "items": {"type": "object", "required": ["value", "metric"], "properties": {
             "value": {"type": "number"}, "metric": {"type": "string"}, "base": {"type": ["string", "null"]},
             "trace": {"type": ["object", "null"], "properties": {
-              "where": {"type": "object"}, "column": {"type": "string"}, "agg": {"enum": ["value", "sum", "mean", "share", "ratio", "delta", "count"]}, "of": {"type": "object"}}}}}},
+              "where": {"type": "object"}, "column": {"type": "string"}, "agg": {"enum": ["value", "sum", "mean", "share", "ratio", "delta", "count"]}, "of": {"type": "object"}, "abs": {"type": "boolean"}}}}}},
           "covers": {"type": "array", "items": {"type": "string"}},
           "notes": {"type": ["string", "null"]}
         }

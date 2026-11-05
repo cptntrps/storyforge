@@ -8,80 +8,446 @@
     "answer": "14% now from proven lines, more only as each test passes."
   },
   "summary_blocks": [
-    {"name": "goals", "lead": "Today we review Q2 and agree the Q3 plan", "bullets": ["Maximise growth within the $125 cost-per-order target", "Validate the new product as the line that keeps cost down", "Reduce reliance on one creator"]},
-    {"name": "period_result", "lead": "Q2 met the target through one product", "bullets": ["Product A cut June cost per order to $119, so Company X met its $125 target through one product."]},
-    {"name": "what_we_see", "lead": "Growth outside Product A is expensive", "bullets": ["Products B and C lost 45% of their new customers, so the lower Q2 cost per order cost Company X growth outside Product A."]},
-    {"name": "what_we_propose", "lead": "Fund proven steps, gate the rest", "bullets": ["Spending $270k a week adds 227 new customers within the $125 target, so Company X buys all the growth the data supports now."]},
-    {"name": "what_we_need_today", "lead": "Three approvals", "bullets": ["Approve the $270k weekly plan", "Approve the three gates", "Name the decision owner per gate"]}
+    {
+      "name": "goals",
+      "lead": "Today we review Q2 and agree the Q3 plan",
+      "bullets": [
+        "Maximise growth within the $125 cost-per-order target",
+        "Validate the new product as the line that keeps cost down",
+        "Reduce reliance on one creator"
+      ]
+    },
+    {
+      "name": "period_result",
+      "lead": "Q2 met the target through one product",
+      "bullets": [
+        "Product A cut June cost per order to $119, so Company X met its $125 target through one product."
+      ]
+    },
+    {
+      "name": "what_we_see",
+      "lead": "Growth outside Product A is expensive",
+      "bullets": [
+        "Products B and C lost 45% of their new customers, so the lower Q2 cost per order cost Company X growth outside Product A."
+      ]
+    },
+    {
+      "name": "what_we_propose",
+      "lead": "Fund proven steps, gate the rest",
+      "bullets": [
+        "Spending $270k a week adds 227 new customers within the $125 target, so Company X buys all the growth the data supports now."
+      ]
+    },
+    {
+      "name": "what_we_need_today",
+      "lead": "Three approvals",
+      "bullets": [
+        "Approve the $270k weekly plan",
+        "Approve the three gates",
+        "Name the decision owner per gate"
+      ]
+    }
   ],
   "slides": [
     {
-      "id": "summary", "kind": "key", "parent": null, "section": "Summary",
+      "id": "summary",
+      "kind": "key",
+      "parent": null,
+      "section": "Summary",
       "title": "Company X can grow new customers 14% within its $125 cost-per-order target, so Q3 funds each step on evidence.",
-      "title_roles": {"subject": "Company X", "verb": "can grow", "object": "new customers", "measure": "14% within its $125 cost-per-order target"},
-      "subtitle": null, "takeaway": null, "callout": null, "layout": "summary", "chart": null, "table": null, "source": "Ad platform export, April to June 2025",
-      "numbers": [{"value": 14, "metric": "new-customer growth, %", "base": "late-June run rate", "trace": {"where": {"scenario": "floor"}, "column": "growth_pct", "agg": "value"}},
-                  {"value": 125, "metric": "cost-per-order target, $", "base": null, "trace": {"where": {"param": "cpo_target"}, "column": "value", "agg": "value"}}]
+      "title_roles": {
+        "subject": "Company X",
+        "verb": "can grow",
+        "object": "new customers",
+        "measure": "14% within its $125 cost-per-order target"
+      },
+      "subtitle": null,
+      "takeaway": null,
+      "callout": null,
+      "layout": "summary",
+      "chart": null,
+      "table": null,
+      "source": "Ad platform export, April to June 2025",
+      "numbers": [
+        {
+          "value": 14,
+          "metric": "new-customer growth, %",
+          "base": "late-June run rate",
+          "trace": {
+            "where": {
+              "scenario": "floor"
+            },
+            "column": "growth_pct",
+            "agg": "value"
+          }
+        },
+        {
+          "value": 125,
+          "metric": "cost-per-order target, $",
+          "base": null,
+          "trace": {
+            "where": {
+              "param": "cpo_target"
+            },
+            "column": "value",
+            "agg": "value"
+          }
+        }
+      ]
     },
     {
-      "id": "q2_result", "kind": "key", "parent": null, "section": "Q2",
+      "id": "q2_result",
+      "kind": "key",
+      "parent": null,
+      "section": "Q2",
       "title": "Product A cut June cost per order to $119, so Company X met its $125 target through one product.",
-      "title_roles": {"subject": "Product A", "verb": "cut", "object": "June cost per order", "measure": "to $119, so Company X met its $125 target through one product"},
+      "title_roles": {
+        "subject": "Product A",
+        "verb": "cut",
+        "object": "June cost per order",
+        "measure": "to $119, so Company X met its $125 target through one product"
+      },
       "subtitle": "Without Product A, June cost per order was $192; new customers rose from 2,495 to 5,425 a month, April to June.",
       "takeaway": "Q2 progress rests on one product.",
       "callout": "June: $119, under the $125 target",
       "layout": "chart_left",
-      "chart": {"type": "lineChart", "title": "Cost per order by month", "unit": "$", "source": "Ad platform export, April to June 2025",
-                "labels": ["Apr", "May", "Jun"],
-                "series": [{"name": "All products", "points": [{"x": "Apr", "y": 224}, {"x": "May", "y": 171}, {"x": "Jun", "y": 119}]},
-                           {"name": "Without Product A", "points": [{"x": "Apr", "y": 224}, {"x": "May", "y": 171}, {"x": "Jun", "y": 192}]}],
-                "target": 125, "annotations": [{"series": 0, "index": 2, "text": "$119, under the $125 target"}]},
-      "table": null, "source": "Ad platform export, April to June 2025",
-      "numbers": [{"value": 119, "metric": "June cost per order, $", "base": "all products", "trace": {"where": {"period": "2025-06"}, "column": "cpo", "agg": "value"}},
-                  {"value": 125, "metric": "cost-per-order target, $", "base": null, "trace": {"where": {"param": "cpo_target"}, "column": "value", "agg": "value"}}],
-      "covers": ["obj_one_product"]
+      "chart": {
+        "type": "lineChart",
+        "title": "Cost per order by month",
+        "unit": "$",
+        "source": "Ad platform export, April to June 2025",
+        "labels": [
+          "Apr",
+          "May",
+          "Jun"
+        ],
+        "series": [
+          {
+            "name": "All products",
+            "points": [
+              {
+                "x": "Apr",
+                "y": 224
+              },
+              {
+                "x": "May",
+                "y": 171
+              },
+              {
+                "x": "Jun",
+                "y": 119
+              }
+            ]
+          },
+          {
+            "name": "Without Product A",
+            "points": [
+              {
+                "x": "Apr",
+                "y": 224
+              },
+              {
+                "x": "May",
+                "y": 171
+              },
+              {
+                "x": "Jun",
+                "y": 192
+              }
+            ]
+          }
+        ],
+        "target": 125,
+        "annotations": [
+          {
+            "series": 0,
+            "index": 2,
+            "text": "$119, under the $125 target"
+          }
+        ]
+      },
+      "table": null,
+      "source": "Ad platform export, April to June 2025",
+      "numbers": [
+        {
+          "value": 119,
+          "metric": "June cost per order, $",
+          "base": "all products",
+          "trace": {
+            "where": {
+              "period": "2025-06",
+              "sku": ""
+            },
+            "column": "cpo",
+            "agg": "value"
+          }
+        },
+        {
+          "value": 125,
+          "metric": "cost-per-order target, $",
+          "base": null,
+          "trace": {
+            "where": {
+              "param": "cpo_target"
+            },
+            "column": "value",
+            "agg": "value"
+          }
+        }
+      ],
+      "covers": [
+        "obj_one_product"
+      ]
     },
     {
-      "id": "q2_detail", "kind": "detail", "parent": "q2_result", "section": "Q2",
+      "id": "q2_detail",
+      "kind": "detail",
+      "parent": "q2_result",
+      "section": "Q2",
       "title": "Product A brought 4,055 of June's 5,425 new customers, 75% of the month, on 28% of spend.",
-      "title_roles": {"subject": "Product A", "verb": "brought", "object": "4,055 of June's 5,425 new customers", "measure": "75% of the month, on 28% of spend"},
-      "subtitle": null, "takeaway": null, "callout": null, "layout": "table", "chart": null,
-      "table": {"rows": [["Product", "New customers", "Share of orders", "Share of spend"], ["Product A", "4,055", "75%", "28%"], ["Product B", "870", "16%", "52%"], ["Product C", "500", "9%", "20%"]]},
+      "title_roles": {
+        "subject": "Product A",
+        "verb": "brought",
+        "object": "4,055 of June's 5,425 new customers",
+        "measure": "75% of the month, on 28% of spend"
+      },
+      "subtitle": null,
+      "takeaway": null,
+      "callout": null,
+      "layout": "table",
+      "chart": null,
+      "table": {
+        "rows": [
+          [
+            "Product",
+            "New customers",
+            "Share of orders",
+            "Share of spend"
+          ],
+          [
+            "Product A",
+            "4,055",
+            "75%",
+            "28%"
+          ],
+          [
+            "Product B",
+            "870",
+            "16%",
+            "52%"
+          ],
+          [
+            "Product C",
+            "500",
+            "9%",
+            "20%"
+          ]
+        ]
+      },
       "source": "Ad platform export, June 2025",
-      "numbers": [{"value": 4055, "metric": "June new customers, Product A", "base": "5,425 total", "trace": {"where": {"period": "2025-06", "sku": "Product A"}, "column": "orders", "agg": "value"}},
-                  {"value": 5425, "metric": "June new customers, all", "base": null, "trace": {"where": {"period": "2025-06"}, "column": "orders", "agg": "sum"}},
-                  {"value": 75, "metric": "share of June new customers, %", "base": "5,425 total", "trace": {"where": {"period": "2025-06", "sku": "Product A"}, "column": "orders", "agg": "share", "of": {"period": "2025-06"}}},
-                  {"value": 28, "metric": "share of June spend, %", "base": "all products", "trace": {"where": {"period": "2025-06", "sku": "Product A"}, "column": "spend", "agg": "share", "of": {"period": "2025-06"}}}]
+      "numbers": [
+        {
+          "value": 4055,
+          "metric": "June new customers, Product A",
+          "base": "5,425 total",
+          "trace": {
+            "where": {
+              "period": "2025-06",
+              "sku": "Product A"
+            },
+            "column": "orders",
+            "agg": "value"
+          }
+        },
+        {
+          "value": 5425,
+          "metric": "June new customers, all",
+          "base": null,
+          "trace": {
+            "where": {
+              "period": "2025-06",
+              "sku": ""
+            },
+            "column": "orders",
+            "agg": "value"
+          }
+        },
+        {
+          "value": 75,
+          "metric": "share of June new customers, %",
+          "base": "5,425 total",
+          "trace": {
+            "where": {
+              "period": "2025-06",
+              "sku": "Product A"
+            },
+            "column": "orders",
+            "agg": "share",
+            "of": {
+              "period": "2025-06",
+              "sku": ""
+            }
+          }
+        },
+        {
+          "value": 28,
+          "metric": "share of June spend, %",
+          "base": "all products",
+          "trace": {
+            "where": {
+              "period": "2025-06",
+              "sku": "Product A"
+            },
+            "column": "spend",
+            "agg": "share",
+            "of": {
+              "period": "2025-06",
+              "sku": ""
+            }
+          }
+        }
+      ]
     },
     {
-      "id": "what_we_see", "kind": "key", "parent": null, "section": "What we see",
+      "id": "what_we_see",
+      "kind": "key",
+      "parent": null,
+      "section": "What we see",
       "title": "Products B and C lost 45% of their new customers, so the lower Q2 cost per order cost Company X growth outside Product A.",
-      "title_roles": {"subject": "Products B and C", "verb": "lost", "object": "45% of their new customers", "measure": "so the lower Q2 cost per order cost Company X growth outside Product A"},
+      "title_roles": {
+        "subject": "Products B and C",
+        "verb": "lost",
+        "object": "45% of their new customers",
+        "measure": "so the lower Q2 cost per order cost Company X growth outside Product A"
+      },
       "subtitle": "Stopping Product B prospecting lost 695 a month and Product C's move to retargeting lost 430.",
-      "takeaway": "Cheaper cost per order came with less growth.", "callout": "-45% new customers, B and C",
+      "takeaway": "Cheaper cost per order came with less growth.",
+      "callout": "-45% new customers, B and C",
       "layout": "chart_left",
-      "chart": {"type": "barChart", "title": "Change in monthly new customers, April to June", "unit": "customers", "source": "Ad platform export",
-                "data": [{"label": "Product A", "value": 4055}, {"label": "Product B", "value": -695}, {"label": "Product C", "value": -430}],
-                "annotations": [{"index": 1, "text": "Prospecting stopped"}]},
-      "table": null, "source": "Ad platform export, April to June 2025",
-      "numbers": [{"value": 45, "metric": "fall in new customers, %", "base": "Products B and C, April to June", "trace": {"where": {"sku_group": "B+C"}, "column": "orders_change_pct", "agg": "value"}}],
-      "covers": ["obj_growth_elsewhere"]
+      "chart": {
+        "type": "barChart",
+        "title": "Change in monthly new customers, April to June",
+        "unit": "customers",
+        "source": "Ad platform export",
+        "data": [
+          {
+            "label": "Product A",
+            "value": 4055
+          },
+          {
+            "label": "Product B",
+            "value": -695
+          },
+          {
+            "label": "Product C",
+            "value": -430
+          }
+        ],
+        "annotations": [
+          {
+            "index": 1,
+            "text": "Prospecting stopped"
+          }
+        ]
+      },
+      "table": null,
+      "source": "Ad platform export, April to June 2025",
+      "numbers": [
+        {
+          "value": 45,
+          "metric": "fall in new customers, %",
+          "base": "Products B and C, April to June",
+          "trace": {
+            "where": {
+              "sku_group": "B+C"
+            },
+            "column": "orders_change_pct",
+            "agg": "value",
+            "abs": true
+          }
+        }
+      ],
+      "covers": [
+        "obj_growth_elsewhere"
+      ]
     },
     {
-      "id": "proposal", "kind": "key", "parent": null, "section": "What we propose",
+      "id": "proposal",
+      "kind": "key",
+      "parent": null,
+      "section": "What we propose",
       "title": "Spending $270k a week adds 227 new customers within the $125 target, so Company X buys all the growth the data supports now.",
-      "title_roles": {"subject": "Spending $270k a week", "verb": "adds", "object": "227 new customers", "measure": "within the $125 target, so Company X buys all the growth the data supports now"},
+      "title_roles": {
+        "subject": "Spending $270k a week",
+        "verb": "adds",
+        "object": "227 new customers",
+        "measure": "within the $125 target, so Company X buys all the growth the data supports now"
+      },
       "subtitle": "185 of the 227 come from Product C at $231 each, paid for by Product A's low cost per order.",
-      "takeaway": "Approve $270k a week and the three gates.", "callout": "+227 a week at $270k",
+      "takeaway": "Approve $270k a week and the three gates.",
+      "callout": "+227 a week at $270k",
       "layout": "three_columns",
-      "columns": [{"takeaway": "Fund proven lines", "figure": "$270k", "evidence": "Weekly spend the data supports"},
-                  {"takeaway": "Gate the untested", "figure": "3 gates", "evidence": "Readouts on 4 Aug, 25 Aug, 15 Sep"},
-                  {"takeaway": "Name owners", "figure": "1 per gate", "evidence": "Decision owner before each release"}],
-      "chart": null, "table": null, "source": "Plan model over April to June rows",
-      "numbers": [{"value": 270000, "metric": "weekly spend, $", "base": null, "trace": {"where": {"scenario": "plan"}, "column": "spend", "agg": "value"}},
-                  {"value": 227, "metric": "added weekly new customers", "base": "late-June run rate", "trace": {"where": {"scenario": "plan"}, "column": "added_orders", "agg": "value"}},
-                  {"value": 125, "metric": "cost-per-order target, $", "base": null, "trace": {"where": {"param": "cpo_target"}, "column": "value", "agg": "value"}}],
-      "covers": ["obj_budget"]
+      "columns": [
+        {
+          "takeaway": "Fund proven lines",
+          "figure": "$270k",
+          "evidence": "Weekly spend the data supports"
+        },
+        {
+          "takeaway": "Gate the untested",
+          "figure": "3 gates",
+          "evidence": "Readouts on 4 Aug, 25 Aug, 15 Sep"
+        },
+        {
+          "takeaway": "Name owners",
+          "figure": "1 per gate",
+          "evidence": "Decision owner before each release"
+        }
+      ],
+      "chart": null,
+      "table": null,
+      "source": "Plan model over April to June rows",
+      "numbers": [
+        {
+          "value": 270000,
+          "metric": "weekly spend, $",
+          "base": null,
+          "trace": {
+            "where": {
+              "scenario": "plan"
+            },
+            "column": "spend",
+            "agg": "value"
+          }
+        },
+        {
+          "value": 227,
+          "metric": "added weekly new customers",
+          "base": "late-June run rate",
+          "trace": {
+            "where": {
+              "scenario": "plan"
+            },
+            "column": "added_orders",
+            "agg": "value"
+          }
+        },
+        {
+          "value": 125,
+          "metric": "cost-per-order target, $",
+          "base": null,
+          "trace": {
+            "where": {
+              "param": "cpo_target"
+            },
+            "column": "value",
+            "agg": "value"
+          }
+        }
+      ],
+      "covers": [
+        "obj_budget"
+      ]
     }
   ]
 }

@@ -1,0 +1,11 @@
+period,sku,sku_group,scenario,param,spend,orders,cpo,growth_pct,added_orders,orders_change_pct,value
+2025-04,Product A,A,,,0,0,,,,,
+2025-05,Product A,A,,,120000,1200,100,,,,
+2025-06,Product A,A,,,75600,4055,18.64,,,,
+2025-06,Product B,B+C,,,140400,870,161.38,,,,
+2025-06,Product C,B+C,,,54000,500,108,,,,
+2025-06,,,,,270000,5425,119,,,,
+,,B+C,,,,,,,,-45,
+,,,floor,,,,,14,236,,
+,,,plan,,270000,,,28,227,,
+,,,,cpo_target,,,,,,,125
