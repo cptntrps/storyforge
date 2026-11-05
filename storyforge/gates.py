@@ -1,6 +1,7 @@
 """After gates: the rate card of a built deck. Scripts over story.json, the PPTX read back, and the spatial gate."""
 
 import json
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -14,7 +15,9 @@ from .checks.structure import check_structure
 from .checks.titles import check_titles, verify_roles
 from .ratecard import MEANING, ORDER, _judged
 
-SPATIAL = Path('/repos/SlideForge/pptx-review/scripts')
+# SlideForge pptx-review scripts (analyze_pptx.py, spatial_analyzer.py); override with STORYFORGE_SPATIAL.
+# R22 reports NA when they are absent.
+SPATIAL = Path(os.environ.get('STORYFORGE_SPATIAL', '/repos/SlideForge/pptx-review/scripts'))
 
 
 def story_checks(story, rows=None):

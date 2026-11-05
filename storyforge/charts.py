@@ -1,6 +1,7 @@
 """Chart rendering: story.json chart specs to SVG through svg-charts (node), SVG to PNG through Playwright."""
 
 import json
+import os
 import subprocess
 from pathlib import Path
 
@@ -8,7 +9,8 @@ from .checks.charts import BUILDERS, slide_charts
 
 PKG = Path(__file__).resolve().parent
 BRIDGE = PKG / 'charts_bridge.mjs'
-DEFAULT_SVG_CHARTS = Path.home() / 'repos/svg-charts/charts.js'
+# The svg-charts module (https://github.com/cptntrps/svg-charts); override with STORYFORGE_SVG_CHARTS.
+DEFAULT_SVG_CHARTS = Path(os.environ.get('STORYFORGE_SVG_CHARTS', str(Path.home() / 'repos/svg-charts/charts.js')))
 # Pixel size per layout so chart text stays legible once the PNG is fitted into its column.
 LAYOUT_SIZES = {'charts_row': (420, 340), 'charts_row+table': (420, 210), 'chart_left': (700, 340), 'chart_full': (900, 330)}
 PASS_THROUGH = ('colors', 'legend', 'valueLabels', 'title', 'unit', 'source', 'annotations', 'labels', 'series', 'data', 'items', 'groups', 'rows', 'columns',

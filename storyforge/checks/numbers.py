@@ -7,12 +7,14 @@ traced value differs beyond the tolerance, fails.
 
 import csv
 import json
+import os
 import subprocess
 from pathlib import Path
 
 from . import Check
 
-PG_EXEC = Path.home() / 'src/infrastructure/bin/pg-exec'
+# A psql-like command that takes -At -c <sql>; override with STORYFORGE_PG_EXEC.
+PG_EXEC = Path(os.environ.get('STORYFORGE_PG_EXEC', str(Path.home() / 'src/infrastructure/bin/pg-exec')))
 
 
 def load_rows(source):
