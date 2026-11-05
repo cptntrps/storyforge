@@ -11,6 +11,7 @@ $scqa
 ## Executive summary blocks
 
 $summary_blocks
+$colors
 One section per slide follows, in deck order.
 
 $slides

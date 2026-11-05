@@ -31,6 +31,7 @@ def test_render_charts_writes_svg_and_png(story_min, tmp_path):
     items = res['q2_by_product']['items']
     assert len(items) == 3 and all(i['png'].stat().st_size > 1000 for i in items)
     assert (tmp_path / 'q2_by_product_1.svg').exists() and 'Share of June spend' in items[1]['svg'].read_text()
+    assert 'viewBox="0 0 420 210"' in items[0]['svg'].read_text(), 'a chart row with a table renders wide and short'
 
 
 def test_non_builder_becomes_table(story_min, tmp_path):
@@ -45,3 +46,5 @@ def test_layout_sizes_apply_unless_given(story_min):
     ch = story_min['slides'][1]['chart']
     assert spec_for(ch, 'charts_row')['width'] == 420 and spec_for(ch, 'chart_left')['width'] == 700
     assert spec_for(dict(ch, width=333), 'charts_row')['width'] == 333
+    assert spec_for(ch, 'chart_left')['legend'] is True and spec_for(ch, 'chart_left')['valueLabels'] is True
+    assert spec_for(ch, 'chart_left', {'Product A': '#1f5fbf'})['colors'] == {'Product A': '#1f5fbf'}

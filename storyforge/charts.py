@@ -10,7 +10,7 @@ PKG = Path(__file__).resolve().parent
 BRIDGE = PKG / 'charts_bridge.mjs'
 DEFAULT_SVG_CHARTS = Path.home() / 'repos/svg-charts/charts.js'
 # Pixel size per layout so chart text stays legible once the PNG is fitted into its column.
-LAYOUT_SIZES = {'charts_row': (420, 340), 'chart_left': (700, 340), 'chart_full': (900, 330)}
+LAYOUT_SIZES = {'charts_row': (420, 340), 'charts_row+table': (420, 210), 'chart_left': (700, 340), 'chart_full': (900, 330)}
 PASS_THROUGH = ('colors', 'legend', 'valueLabels', 'title', 'unit', 'source', 'annotations', 'labels', 'series', 'data', 'items', 'groups', 'rows', 'columns',
                 'keys', 'colors', 'target', 'aLabel', 'bLabel', 'width', 'height', 'label')
 
@@ -30,6 +30,8 @@ def spec_for(chart, layout=None, colors=None):
         spec.setdefault('colors', dict(colors))
     if chart.get('type') in MULTI_SERIES:
         spec.setdefault('legend', True)
+    if chart.get('type') == 'lineChart':
+        spec.setdefault('valueLabels', True)
     return spec
 
 
@@ -45,13 +47,14 @@ def render_svg(chart, svg_charts_path=DEFAULT_SVG_CHARTS, layout=None, colors=No
 
 def svg_to_png(svg_text, out_png, scale=2):
     from playwright.sync_api import sync_playwright
-    html = ('<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#fff;'
+    html = ('<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:transparent;'
             'font-family:Inter,Arial,sans-serif}svg{display:block}</style></head><body>' + svg_text + '</body></html>')
     with sync_playwright() as p:
         b = p.chromium.launch()
         page = b.new_page(device_scale_factor=scale)
         page.set_content(html)
-        page.locator('svg').first.screenshot(path=str(out_png))
+        # Transparent so the PNG sits on any slide background.
+        page.locator('svg').first.screenshot(path=str(out_png), omit_background=True)
         b.close()
     return Path(out_png)
 
@@ -76,8 +79,11 @@ def render_charts(story, out_dir, svg_charts_path=DEFAULT_SVG_CHARTS, png=True):
         return entry
 
     for s in story['slides']:
+        layout = s.get('layout')
+        if layout == 'charts_row' and (s.get('table') or {}).get('rows'):
+            layout = 'charts_row+table'  # the table takes the lower half, so the charts go wide and short
         if s.get('chart'):
-            result[s['id']] = one(s['id'], s['chart'], s.get('layout'))
+            result[s['id']] = one(s['id'], s['chart'], layout)
         elif s.get('charts'):
-            result[s['id']] = {'items': [one(f"{s['id']}#{i}", ch, s.get('layout')) for i, ch in enumerate(s['charts'])]}
+            result[s['id']] = {'items': [one(f"{s['id']}#{i}", ch, layout) for i, ch in enumerate(s['charts'])]}
     return result

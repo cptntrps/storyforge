@@ -112,7 +112,8 @@ LAYOUT_SKETCHES = {
 +--------------------------------------------------------------+""",
 }
 
-SLIDES_COLUMNS = ['id', 'kind', 'parent', 'section', 'layout', 'title', 'subtitle', 'takeaway', 'callout', 'source']
+SLIDES_COLUMNS = ['id', 'kind', 'parent', 'section', 'layout', 'title', 'subtitle', 'takeaway', 'callout', 'implication', 'footnotes', 'source']
+COLORS_COLUMNS = ['entity', 'hex']
 NUMBERS_COLUMNS = ['slide', 'value', 'metric', 'base', 'trace']
 SHEET_NAME_MAX = 31
 
@@ -197,23 +198,41 @@ def slide_charts(slide):
     return [slide['chart']] if slide.get('chart') else []
 
 
+def _slides_row(s):
+    row = []
+    for c in SLIDES_COLUMNS:
+        v = s.get(c)
+        if c == 'footnotes':
+            v = ' | '.join(v or [])
+        row.append(_cell(v))
+    return row
+
+
+def _add_sheet(sheets, name, rows):
+    if name in sheets:
+        raise ValueError(f'sheet name collision: {name!r} is used twice (slide ids cut to 31 chars, or an id that ends like <id>_<i>)')
+    sheets[name] = rows
+
+
 def data_sheets(story):
-    """Every sheet of data.xlsx as {name: rows}, in order: slides, numbers, then one per chart or table."""
+    """Every sheet of data.xlsx as {name: rows}, in order: slides, numbers, colors when given, then one per chart or table."""
     sheets = {}
-    sheets['slides'] = [SLIDES_COLUMNS] + [[_cell(s.get(c)) for c in SLIDES_COLUMNS] for s in story['slides']]
+    sheets['slides'] = [SLIDES_COLUMNS] + [_slides_row(s) for s in story['slides']]
     numbers = [NUMBERS_COLUMNS]
     for s in story['slides']:
         for n in s.get('numbers') or []:
             numbers.append([s['id'], n.get('value'), n.get('metric'), n.get('base'), json.dumps(n.get('trace'), ensure_ascii=False)])
     sheets['numbers'] = numbers
+    if story.get('colors'):
+        sheets['colors'] = [COLORS_COLUMNS] + [[k, v] for k, v in story['colors'].items()]
     for s in story['slides']:
         if s.get('charts'):
             for i, c in enumerate(s['charts'], 1):
-                sheets[sheet_name(s['id'], i)] = chart_rows(c)
+                _add_sheet(sheets, sheet_name(s['id'], i), chart_rows(c))
         elif s.get('chart'):
-            sheets[sheet_name(s['id'])] = chart_rows(s['chart'])
-        elif s.get('table'):
-            sheets[sheet_name(s['id'])] = [list(r) for r in s['table'].get('rows') or []]
+            _add_sheet(sheets, sheet_name(s['id']), chart_rows(s['chart']))
+        if s.get('table'):
+            _add_sheet(sheets, sheet_name(s['id']), [list(r) for r in s['table'].get('rows') or []])
     return sheets
 
 
@@ -304,11 +323,11 @@ def _slide_section(n, s):
             lines.append(f"- Chart {i}: takeaway \"{c.get('takeaway', '')}\", {_chart_line(c, sheet_name(s['id'], i), stem)}")
     elif charts:
         lines.append(f"- Chart: {_chart_line(charts[0], sheet_name(s['id']), s['id'])}")
-    elif table:
-        rows = table.get('rows') or []
-        lines.append(f"- Table: {max(len(rows) - 1, 0)} rows plus header, data: see data.xlsx sheet {sheet_name(s['id'])}")
     else:
         lines.append('- Chart: none')
+    if table:
+        rows = table.get('rows') or []
+        lines.append(f"- Table: {max(len(rows) - 1, 0)} rows plus header, data: see data.xlsx sheet {sheet_name(s['id'])}")
     if s.get('columns'):
         lines.append('- Columns:')
         for c in s['columns']:
@@ -317,7 +336,13 @@ def _slide_section(n, s):
         lines.append('- Body:')
         for b in s['body']:
             lines.append(f'  - {b}')
+    lines.append(f"- Implication: {s.get('implication') or 'none'}")
     lines.append(f"- Source: {s.get('source') or 'none'}")
+    footnotes = s.get('footnotes') or []
+    if footnotes:
+        lines.append('- Footnotes:')
+        for i, f in enumerate(footnotes, 1):
+            lines.append(f'  {i}. {f}')
     numbers = s.get('numbers') or []
     if numbers:
         lines.append('- Numbers:')
@@ -348,6 +373,10 @@ def render_brief(story):
         blocks.extend(f'- {x}' for x in b.get('bullets') or [])
         blocks.append('')
     slides = [_slide_section(n, s) for n, s in enumerate(story['slides'], 1)]
+    colors = ''
+    if story.get('colors'):
+        colors = ('\n## Colours\n\nUse one colour per entity on every chart. The same list sits in data.xlsx sheet colors.\n\n'
+                  + _md_table(COLORS_COLUMNS, [[k, v] for k, v in story['colors'].items()]) + '\n')
     used = []
     for s in story['slides']:
         if s.get('layout') not in used:
@@ -365,6 +394,7 @@ def render_brief(story):
         governing_thought=story['governing_thought'],
         scqa=scqa_md,
         summary_blocks='\n'.join(blocks),
+        colors=colors,
         slides='\n'.join(slides),
         sketches='\n'.join(sketches),
         verify=VERIFY_COMMAND,

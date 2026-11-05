@@ -2,7 +2,11 @@ import json
 
 from openpyxl import load_workbook
 
-from storyforge.handoff import GATES, LAYOUT_SKETCHES, build_handoff, chart_rows, sheet_name
+import copy
+
+import pytest
+
+from storyforge.handoff import GATES, LAYOUT_SKETCHES, build_handoff, chart_rows, data_sheets, sheet_name
 
 EM_DASH = chr(0x2014)
 
@@ -108,7 +112,7 @@ def test_chart_rows_per_type():
 def test_charts_row_slide_gets_one_sheet_per_chart(story_min, tmp_path):
     out = build_handoff(story_min, {}, None, tmp_path)
     wb = load_workbook(out / 'data.xlsx')
-    assert [n for n in wb.sheetnames if n.startswith('q2_by_product')] == ['q2_by_product_1', 'q2_by_product_2', 'q2_by_product_3']
+    assert [n for n in wb.sheetnames if n.startswith('q2_by_product_')] == ['q2_by_product_1', 'q2_by_product_2', 'q2_by_product_3']
     header = lambda n: list(next(wb[n].iter_rows(values_only=True)))
     assert header('q2_by_product_1') == ['label', 'value']
     assert header('q2_by_product_2') == ['label', 'Product A', 'Product B', 'Product C']
@@ -129,3 +133,38 @@ def test_charts_row_items_copied(story_min, tmp_path):
     for i in range(1, 4):
         assert (out / 'charts' / f'q2_by_product_{i}.svg').read_text() == f'<svg id="{i}"/>'
         assert not (out / 'charts' / f'q2_by_product_{i}.png').exists()
+
+
+def test_colors_footnotes_implication_and_table_on_charts_row(story_min, tmp_path):
+    out = build_handoff(story_min, {}, None, tmp_path)
+    brief = (out / 'BRIEF.md').read_text()
+    colours = brief.split('## Colours')[1].split('One section per slide')[0]
+    for entity, hexv in story_min['colors'].items():
+        assert f'| {entity} | {hexv} |' in colours
+    slide = next(s for s in story_min['slides'] if s['id'] == 'q2_by_product')
+    section = brief.split('## Slide 3: q2_by_product')[1].split('## Slide 4')[0]
+    assert f"- Implication: {slide['implication']}" in section
+    for i, f in enumerate(slide['footnotes'], 1):
+        assert f'  {i}. {f}' in section
+    assert 'data.xlsx sheet q2_by_product_3' in section and '- Table: 4 rows plus header, data: see data.xlsx sheet q2_by_product' in section
+    wb = load_workbook(out / 'data.xlsx')
+    assert [n for n in wb.sheetnames if n.startswith('q2_by_product')] == ['q2_by_product_1', 'q2_by_product_2', 'q2_by_product_3', 'q2_by_product']
+    assert [list(r) for r in wb['q2_by_product'].iter_rows(values_only=True)] == slide['table']['rows']
+    assert [list(r) for r in wb['colors'].iter_rows(values_only=True)] == [['entity', 'hex']] + [list(kv) for kv in story_min['colors'].items()]
+    slides = [list(r) for r in wb['slides'].iter_rows(values_only=True)]
+    header = slides[0]
+    assert 'implication' in header and 'footnotes' in header
+    row = next(r for r in slides[1:] if r[0] == 'q2_by_product')
+    assert row[header.index('implication')] == slide['implication']
+    assert row[header.index('footnotes')] == ' | '.join(slide['footnotes'])
+    assert (out / 'data' / 'colors.csv').read_text().splitlines()[0] == 'entity,hex'
+    assert (out / 'data' / 'q2_by_product.csv').exists()
+
+
+def test_sheet_name_collision_fails_loudly(story_min):
+    bad = copy.deepcopy(story_min)
+    clash = copy.deepcopy(bad['slides'][3])
+    clash['id'] = 'q2_by_product_1'
+    bad['slides'].append(clash)
+    with pytest.raises(ValueError, match='collision'):
+        data_sheets(bad)

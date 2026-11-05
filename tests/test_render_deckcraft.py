@@ -87,3 +87,23 @@ def test_charts_row_renders_with_items_and_without(story_min, tmp_path):
     pptx = render_pptx(story_min, {}, tmp_path / 'without')
     assert pptx.exists()
     assert len(_info(tmp_path / 'without' / 'deck.deckcraft')['slides']) == 6
+
+
+def test_summary_rows_and_bottom_stack_shapes(story_min, tmp_path):
+    """The summary slide draws one message box and one points box per block; the charts_row slide
+    carries the table, the implication pair and the footnotes under the charts."""
+    from pptx import Presentation
+    pptx = render_pptx(story_min, {}, tmp_path)
+    prs = Presentation(str(pptx))
+    names = [sh.name for sh in prs.slides[0].shapes]
+    assert [n for n in names if n.endswith('_Msg')] == [f'Row_{i}_Msg' for i in range(1, 6)]
+    assert [n for n in names if n.endswith('_Pts')] == [f'Row_{i}_Pts' for i in range(1, 6)]
+    assert 'Kicker' in names and 'Footer_Num' in names
+    row = _slide_index(story_min, 'q2_by_product')
+    shapes = {sh.name: sh for sh in prs.slides[row - 1].shapes}
+    for n in ('Table', 'Implication_Body', 'Implication_Bar', 'Footnotes', 'Takeaway_Band', 'Take_1_Badge', 'Take_1_Text'):
+        assert n in shapes, n
+    body, bar = shapes['Implication_Body'], shapes['Implication_Bar']
+    assert bar.left == body.left and bar.top == body.top and bar.height == body.height
+    assert shapes['Take_1_Text'].left - (shapes['Take_1_Badge'].left + shapes['Take_1_Badge'].width) == 8 * 12700
+    assert shapes['Table'].top > max(sh.top + sh.height for k, sh in shapes.items() if k.startswith('Chart_'))
