@@ -1,0 +1,37 @@
+{
+  "fonts": {
+    "family": "Inter",
+    "fallback": "Arial"
+  },
+  "colors": {
+    "ink": "#1A1D23",
+    "muted": "#6B7280",
+    "line": "#E5E7EB",
+    "accent": "#2563EB",
+    "accent_dark": "#1E3A8A",
+    "band": "#F3F4F6",
+    "white": "#FFFFFF",
+    "red": "#DC2626",
+    "green": "#15803D"
+  },
+  "grid": {
+    "width": 960,
+    "height": 540,
+    "x0": 44,
+    "w0": 872,
+    "rule_y": 36,
+    "title_y": 48,
+    "title_h": 52,
+    "sub_y": 112,
+    "body_y": 160,
+    "body_end": 408,
+    "source_y": 418,
+    "take_y": 442,
+    "foot_y": 488,
+    "gutter": 32
+  },
+  "title_size": 20,
+  "chars_per_line": 70,
+  "footer_text": "",
+  "line_factor": 1.75
+}

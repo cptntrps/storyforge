@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f4f5f4;
+  --paper: #ffffff;
+  --ink: #141716;
+  --muted: #6f7980;
+  --rule: #e4e6e5;
+  --accent: #2a78d6;
+  --accent-soft: #e8f0fb;
+  --chart-grid: #e4e6e5;
+  --chart-axis-text: #6f7980;
+  --chart-ink: #141716;
+  --chart-target: #c0392b;
+  --chart-1: #2a78d6;
+  --chart-2: #0ca37a;
+  --chart-3: #8d5bd6;
+  --chart-4: #d98500;
+  --chart-5: #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1315;
+    --paper: #151a1d;
+    --ink: #eef2f0;
+    --muted: #9aa3a0;
+    --rule: #262d31;
+    --accent: #3987e5;
+    --accent-soft: #1a2a3d;
+    --chart-grid: #262d31;
+    --chart-axis-text: #9aa3a0;
+    --chart-ink: #eef2f0;
+    --chart-target: #e05a4b;
+    --chart-1: #3987e5;
+    --chart-2: #12b386;
+    --chart-3: #a075e6;
+    --chart-4: #f09a10;
+    --chart-5: #e35353;
+  }
+}
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+}
+header.deck, nav.deck-nav, main { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+header.deck { padding-top: 32px; }
+header.deck h1 { font-size: 1.75rem; margin: 0 0 8px; }
+header.deck .governing { font-size: 1.1rem; color: var(--muted); margin: 0 0 24px; }
+nav.deck-nav { margin-bottom: 24px; }
+nav.deck-nav ol { margin: 0; padding-left: 1.4em; }
+nav.deck-nav li { margin: 4px 0; }
+nav.deck-nav a { color: var(--accent); text-decoration: none; }
+nav.deck-nav a:hover { text-decoration: underline; }
+main { counter-reset: slide; padding-bottom: 48px; }
+section.slide {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 28px 32px 24px;
+  margin: 0 0 24px;
+  position: relative;
+}
+section.slide[data-kind="key"] { counter-increment: slide; }
+section.slide[data-kind="key"]::after {
+  content: counter(slide);
+  position: absolute;
+  right: 16px;
+  bottom: 12px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+section.slide[hidden] { display: none; }
+section.slide[hidden]:target { display: block; }
+section.detail-slide { border-left: 4px solid var(--accent); }
+.kicker {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+section.slide h2 { font-size: 1.35rem; line-height: 1.3; margin: 0 0 8px; }
+.subtitle { color: var(--muted); margin: 0 0 18px; font-size: 1rem; }
+.body { margin-top: 12px; }
+.body ul { margin: 6px 0 0; padding-left: 1.3em; }
+.body li { margin: 3px 0; }
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+.block { border-top: 2px solid var(--rule); padding-top: 8px; }
+.block .block-lead { margin: 0; }
+.chart-left { display: grid; grid-template-columns: minmax(0, 3fr) minmax(200px, 2fr); gap: 24px; align-items: start; }
+figure { margin: 0; }
+figure svg { width: 100%; height: auto; display: block; }
+figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+figure.chart-missing {
+  border: 1px dashed var(--muted);
+  border-radius: 4px;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+}
+aside.panel { background: var(--accent-soft); border-radius: 6px; padding: 16px; }
+.callout { font-size: 1.5rem; font-weight: 700; margin: 0 0 10px; }
+.takeaway { font-weight: 600; margin-top: 16px; padding-top: 10px; border-top: 1px solid var(--rule); }
+aside.panel .takeaway { margin-top: 8px; padding-top: 0; border-top: 0; }
+table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--rule); }
+th { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+td:not(:first-child), th:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+.three-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+.col { border-top: 2px solid var(--accent); padding-top: 10px; }
+.col-takeaway { margin: 0 0 6px; font-weight: 600; }
+.big-figure { font-size: 2rem; font-weight: 700; margin: 0 0 6px; font-variant-numeric: tabular-nums; }
+.evidence { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.source { font-size: 0.8rem; color: var(--muted); margin: 16px 0 0; }
+.details, .back { font-size: 0.9rem; margin: 10px 0 0; }
+.details a, .back a { color: var(--accent); }
+@media (max-width: 640px) {
+  section.slide { padding: 20px 16px; }
+  .chart-left { grid-template-columns: 1fr; }
+}
+@page { size: landscape; margin: 12mm; }
+@media print {
+  body { background: #ffffff; color: #141716; }
+  nav.deck-nav { display: none; }
+  header.deck { padding-top: 0; }
+  section.slide, section.slide[hidden] {
+    display: block;
+    break-after: page;
+    page-break-after: always;
+    break-inside: avoid;
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+    padding: 0 0 16px;
+    min-height: 0;
+  }
+  section.slide:last-of-type { break-after: auto; page-break-after: auto; }
+  .details a, .back a { color: inherit; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<header class="deck">
+  <h1>{{title}}</h1>
+  <p class="governing">{{governing_thought}}</p>
+</header>
+<nav class="deck-nav" aria-label="Slides">
+  <ol>
+{{nav}}
+  </ol>
+</nav>
+<main>
+{{slides}}
+</main>
+</body>
+</html>

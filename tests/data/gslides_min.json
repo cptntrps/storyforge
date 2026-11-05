@@ -1,0 +1,46 @@
+{
+  "presentationId": "pres-min",
+  "title": "Product A review",
+  "slides": [
+    {
+      "objectId": "s1",
+      "pageElements": [
+        {"objectId": "s1-title", "shape": {"shapeType": "TEXT_BOX", "placeholder": {"type": "TITLE"},
+          "text": {"textElements": [
+            {"textRun": {"content": "Product A grew revenue 12% to $2,495k in Q3\n"}}]}}},
+        {"objectId": "s1-body", "shape": {"shapeType": "TEXT_BOX", "placeholder": {"type": "BODY"},
+          "text": {"textElements": [
+            {"paragraphMarker": {}},
+            {"textRun": {"content": "Company X added 5 new accounts\n"}},
+            {"paragraphMarker": {}},
+            {"textRun": {"content": "\n"}},
+            {"paragraphMarker": {}},
+            {"textRun": {"content": "Churn stayed at 1.6x the plan\n"}}]}}}
+      ],
+      "slideProperties": {"notesPage": {"pageElements": [
+        {"objectId": "s1-notes", "shape": {"placeholder": {"type": "BODY"},
+          "text": {"textElements": [{"textRun": {"content": "Mention the Q4 outlook.\n"}}]}}}]}}
+    },
+    {
+      "objectId": "s2",
+      "pageElements": [
+        {"objectId": "s2-title", "shape": {"shapeType": "TEXT_BOX", "placeholder": {"type": "CENTERED_TITLE"},
+          "text": {"textElements": [{"textRun": {"content": "Summary of unit economics\n"}}]}}},
+        {"objectId": "s2-table", "table": {"rows": 2, "columns": 2, "tableRows": [
+          {"tableCells": [
+            {"text": {"textElements": [{"textRun": {"content": "Metric\n"}}]}},
+            {"text": {"textElements": [{"textRun": {"content": "Value\n"}}]}}]},
+          {"tableCells": [
+            {"text": {"textElements": [{"textRun": {"content": "CPO\n"}}]}},
+            {"text": {"textElements": [{"textRun": {"content": "$119\n"}}]}}]}]}},
+        {"objectId": "s2-chart", "sheetsChart": {"spreadsheetId": "sheet-1", "chartId": 7}}
+      ]
+    },
+    {
+      "objectId": "s3",
+      "pageElements": [
+        {"objectId": "s3-img", "image": {"contentUrl": "https://example.invalid/img.png"}}
+      ]
+    }
+  ]
+}

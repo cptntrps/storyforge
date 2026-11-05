@@ -14,8 +14,11 @@ agent needs to build it.
 Falsifiable success test:
 
 1. Run on reference deck A (an HTML QBR deck, 9 key slides plus appendices, built in
-   October 2026). The before rate card must flag: the executive summary has no goals block
-   (the owner's critique of 2026-11-01) and every title that fails the SVOM role check.
+   October 2026). The before rate card must flag every title that fails the SVOM lexical
+   filter and the colon title, and the two blind judged passes must agree on the implied
+   story. The goals-block defect (the owner's critique of 2026-11-01) fires on a summary
+   that lacks the block; deck A gained the block on 2026-11-02, so reference deck B is the
+   case that proves the check fires.
 2. The rebuilt deck A passes every gate, and every number in a title traces to a row in
    its metrics table (531 rows, Postgres) or to the deck's own data table.
 3. Run on reference deck B (a corporate PPTX brief). The rate card and the questions come

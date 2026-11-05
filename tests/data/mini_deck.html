@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mini deck</title>
+<style>
+  section.slide { padding: 24px; border: 1px solid #ccc; margin: 12px; }
+  .subtitle { color: #555; }
+</style>
+</head>
+<body>
+  <section class="slide" id="s1">
+    <h2>Product A cut June cost per order to $119, so Company X met its $125 target.</h2>
+    <p class="subtitle">Without Product A, June cost per order was $192.</p>
+    <p>New customers rose from 2,495 to 5,425 a month, April to June.</p>
+    <p>Spend held at $270k a week, 1.6x the April level.</p>
+  </section>
+  <section class="slide detail-slide" id="s2" hidden>
+    <h2>Detail: cost per order by product</h2>
+    <table>
+      <tr><th>Product</th><th>CPO</th></tr>
+      <tr><td>A</td><td>$119</td></tr>
+    </table>
+    <p>Source: ad platform export, April to June.</p>
+  </section>
+  <section class="slide" id="s3">
+    <h2>Cost per order fell 5% in June.</h2>
+    <svg aria-label="Cost per order by month" role="img" viewBox="0 0 100 40"><text x="1" y="10">chart text</text></svg>
+    <ul><li>June held the target.</li><li>May did not.</li></ul>
+    <aside class="notes">Speaker note for s3.</aside>
+  </section>
+</body>
+</html>
