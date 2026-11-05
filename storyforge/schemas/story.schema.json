@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "story.json: the one contract between narration, rendering, handoff and gates",
+  "type": "object",
+  "required": ["governing_thought", "summary_blocks", "slides"],
+  "properties": {
+    "title": {"type": "string"},
+    "governing_thought": {"type": "string", "minLength": 1},
+    "scqa": {"type": "object", "properties": {
+      "situation": {"type": "string"}, "complication": {"type": "string"},
+      "question": {"type": "string"}, "answer": {"type": "string"}}},
+    "summary_blocks": {
+      "type": "array", "minItems": 5, "maxItems": 5,
+      "items": {"type": "object", "required": ["name", "bullets"], "properties": {
+        "name": {"type": "string"}, "lead": {"type": "string"},
+        "bullets": {"type": "array", "items": {"type": "string"}}}}
+    },
+    "slides": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "title", "title_roles", "layout"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "kind": {"enum": ["key", "detail"]},
+          "parent": {"type": ["string", "null"]},
+          "section": {"type": ["string", "null"]},
+          "title": {"type": "string", "minLength": 1},
+          "title_roles": {"type": "object", "required": ["subject", "verb", "object", "measure"], "properties": {
+            "subject": {"type": "string"}, "verb": {"type": "string"}, "object": {"type": "string"}, "measure": {"type": "string"}}},
+          "subtitle": {"type": ["string", "null"]},
+          "takeaway": {"type": ["string", "null"]},
+          "callout": {"type": ["string", "null"]},
+          "layout": {"enum": ["summary", "chart_left", "chart_full", "table", "three_columns", "text_only"]},
+          "chart": {"type": ["object", "null"], "properties": {
+            "type": {"type": "string"}, "title": {"type": "string"}, "unit": {"type": "string"},
+            "source": {"type": "string"}, "annotations": {"type": "array"}}},
+          "table": {"type": ["object", "null"], "properties": {"rows": {"type": "array", "items": {"type": "array"}}}},
+          "columns": {"type": "array", "items": {"type": "object", "properties": {
+            "takeaway": {"type": "string"}, "figure": {"type": "string"}, "evidence": {"type": "string"}}}},
+          "body": {"type": "array", "items": {"type": "string"}},
+          "source": {"type": ["string", "null"]},
+          "numbers": {"type": "array", "items": {"type": "object", "required": ["value", "metric"], "properties": {
+            "value": {"type": "number"}, "metric": {"type": "string"}, "base": {"type": ["string", "null"]},
+            "trace": {"type": ["object", "null"], "properties": {
+              "where": {"type": "object"}, "column": {"type": "string"}, "agg": {"enum": ["value", "sum", "mean", "share", "ratio", "delta", "count"]}, "of": {"type": "object"}}}}}},
+          "covers": {"type": "array", "items": {"type": "string"}},
+          "notes": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}

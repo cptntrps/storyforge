@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "frame.json: who reads the deck, what they decide, what they ask",
+  "type": "object",
+  "required": ["provenance"],
+  "properties": {
+    "audience": {"type": ["string", "null"]},
+    "decision": {"type": ["string", "null"]},
+    "question": {"type": ["string", "null"]},
+    "situation": {"type": ["string", "null"]},
+    "complication": {"type": ["string", "null"]},
+    "beliefs": {"type": "array", "items": {"type": "string"}},
+    "objections": {"type": "array", "items": {"type": "object", "required": ["id", "text"], "properties": {"id": {"type": "string"}, "text": {"type": "string"}}}},
+    "data_available": {"type": "array", "items": {"type": "string"}},
+    "constraints": {"type": "array", "items": {"type": "string"}},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": {"enum": ["brief", "deck", "inferred", "owner", "missing"]}
+    },
+    "confirm": {"type": "boolean"}
+  }
+}

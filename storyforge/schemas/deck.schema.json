@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "deck.json: what an ingester read from a presentation",
+  "type": "object",
+  "required": ["source", "format", "slides"],
+  "properties": {
+    "source": {"type": "string"},
+    "format": {"enum": ["pptx", "html", "gslides"]},
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["n", "title", "body", "kind"],
+        "properties": {
+          "n": {"type": "integer", "minimum": 1},
+          "id": {"type": "string"},
+          "title": {"type": "string"},
+          "subtitle": {"type": ["string", "null"]},
+          "body": {"type": "array", "items": {"type": "string"}},
+          "tables": {"type": "array", "items": {"type": "object", "required": ["rows"], "properties": {"rows": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}}}}},
+          "charts": {"type": "array", "items": {"type": "object", "required": ["type"], "properties": {
+            "type": {"type": "string"},
+            "title": {"type": ["string", "null"]},
+            "categories": {"type": "array"},
+            "series": {"type": "array", "items": {"type": "object", "properties": {"name": {"type": ["string", "null"]}, "values": {"type": "array"}}}}
+          }}},
+          "notes": {"type": ["string", "null"]},
+          "numbers": {"type": "array", "items": {"type": "object", "required": ["value", "context"], "properties": {
+            "value": {"type": "number"}, "unit": {"type": ["string", "null"]}, "context": {"type": "string"}}}},
+          "kind": {"enum": ["cover", "summary", "key", "detail", "appendix"]},
+          "unreadable": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

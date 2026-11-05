@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "judgments.json: two blind model passes per judged check; a script joins them",
+  "type": "object",
+  "properties": {
+    "implied_story": {"type": ["object", "null"], "properties": {
+      "governing_thought": {"type": "string"}, "slides": {"type": "array", "items": {"type": "integer"}},
+      "reasons": {"type": "array", "items": {"type": "string"}}}},
+    "defects": {"type": "array", "items": {"type": "object", "required": ["text"], "properties": {
+      "text": {"type": "string"}, "slides": {"type": "array"}}}},
+    "necessity": {"type": "object", "additionalProperties": {"type": "object", "additionalProperties": {"type": "boolean"}}}
+  },
+  "patternProperties": {
+    "^R[0-9]{2}$": {"type": "object", "required": ["pass_a", "pass_b"], "properties": {
+      "pass_a": {"enum": ["PASS", "FAIL", "NA"]},
+      "pass_b": {"enum": ["PASS", "FAIL", "NA"]},
+      "evidence": {"type": "array"}}}
+  }
+}
