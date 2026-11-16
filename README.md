@@ -13,6 +13,8 @@ go, rebuilds the deck from one contract, `story.json`, into a PPTX and a one-fil
 - Every number in a title traces to a data row (CSV, JSON or Postgres), or the gate fails.
 - Charts come from [svg-charts](https://github.com/cptntrps/svg-charts): inline SVG with title, unit,
   source, legend, one colour per entity and one callout.
+- In the deck, each chart is native PowerPoint shapes that a person can edit (svg-charts 0.14.1 or later,
+  `deck/chart.py`). A chart whose slot is too low keeps its picture and the build says why; `--pictures` keeps all pictures.
 
 ## Install
 

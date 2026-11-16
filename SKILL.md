@@ -89,6 +89,11 @@ Build here (default):
 python3 -m storyforge build work/story.json --charts work/charts -o work/out --html
 python3 -m storyforge gates work/out/deck.pptx --story work/story.json --rows <rows> --judgments work/judgments_after.json
 ```
+`build` draws each chart as native PowerPoint shapes (bars, lines and text boxes a person can edit, in the theme
+of the deck) through svg-charts `deck/chart.py`. It prints how many charts are native. A chart whose slot is too
+low for a readable plot keeps its picture, with the reason, and the charts of one slide are native together or
+not at all: free room on that slide (a shorter implication, two charts in place of three) and build again.
+`--pictures` keeps every chart as a picture. `work/out/native/report.json` has one row per chart.
 Look at `work/out/png/*.png` before handover. A dense summary continues on a second slide and a
 table that does not fit under its charts follows on a data slide; the title gate collapses those
 continuations. The after card must be all PASS before you call the deck MBB-ready; otherwise hand
