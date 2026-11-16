@@ -55,7 +55,7 @@ class _Deck:
         self.cmds = []
         self.count = 0
         self.chart_slots = []      # one per chart drawn: slide number, shape name, chart spec, the rect it was given
-        self.native = False        # True: the charts become native shapes after the build
+        self.native_spill = set()  # slide ids whose table moves to a data slide, so the charts get the height native shapes need
 
     def c(self, cmd, params=None):
         self.cmds.append(cmd if params is None else f'{cmd}={json.dumps(params, ensure_ascii=False)}')
@@ -407,7 +407,7 @@ def _layout_charts_row(d, story, slide, charts, top, bottom):
         head_h, row_h = 20, 16
         table_h = head_h + row_h * (len(rows) - 1)
         # Native charts keep their text at its real size, so they need more height than a picture that shrinks.
-        if bottom - table_h - g['gap'] - top < (NATIVE_CHART_H if d.native else MIN_CHART_H) + 20:
+        if bottom - table_h - g['gap'] - top < (NATIVE_CHART_H if slide['id'] in d.native_spill else MIN_CHART_H) + 20:
             spill, rows = rows, []   # the table goes to a continuation slide; the charts keep the room
         else:
             chart_bottom = bottom - table_h - g['gap']
@@ -485,15 +485,11 @@ def _bottom_stack(d, slide, charts, footer_top):
     return y
 
 
-def render_pptx(story, charts, out_dir, style='default', name='deck', native=False, report=None):
-    """Build the deck; returns the .pptx path. Also writes <name>.deckcraft and png/slide-NN.png.
-    native=True then swaps each chart picture for native, editable PowerPoint shapes (storyforge.native_charts);
-    `report`, a list, receives one row per chart: {ref, native, reason}."""
-    st = load_style(style)
-    check_titles(story, st)
+def _compose(story, charts, st, native_spill=None):
+    """Lay out every slide as deckcraft commands; returns the deck (commands and chart slots), not yet built."""
     charts = charts or {}
     d = _Deck(st)
-    d.native = bool(native)
+    d.native_spill = set(native_spill or ())
     g, c = st['grid'], st['colors']
     gap = g['gap']
     footer_text = story.get('footer') or st.get('footer_text') or ''
@@ -536,6 +532,28 @@ def render_pptx(story, charts, out_dir, style='default', name='deck', native=Fal
             footer_top = d.footer(slide.get('footnotes'), footer_text)
             bottom2 = _bottom_stack(d, {'source': slide.get('source'), 'charts': None, 'id': slide['id']}, charts, footer_top)
             _layout_table(d, story, {'id': slide['id'], 'table': {'rows': spill}}, charts, g['sub_y'], bottom2)
+    return d
+
+
+def render_pptx(story, charts, out_dir, style='default', name='deck', native=False, report=None):
+    """Build the deck; returns the .pptx path. Also writes <name>.deckcraft and png/slide-NN.png.
+    native=True then swaps each chart picture for native, editable PowerPoint shapes (storyforge.native_charts);
+    `report`, a list, receives one row per chart: {ref, native, reason}."""
+    st = load_style(style)
+    check_titles(story, st)
+    d = _compose(story, charts, st)
+    if native and d.chart_slots:
+        from ..native_charts import check
+        # Native shapes keep their text size, so a row of charts above a table can be too low. Try that slide with
+        # its table on a data slide; keep that layout only when all its charts then fit as native shapes.
+        fits = check(d.chart_slots, story, Path(out_dir))
+        tight = {s['id'] for s in story['slides'] if s.get('layout') == 'charts_row' and (s.get('table') or {}).get('rows')
+                 and any(not fits[ref][0] for ref in fits if ref.split('#')[0] == s['id'])}
+        if tight:
+            d2 = _compose(story, charts, st, tight)
+            fits2 = check(d2.chart_slots, story, Path(out_dir))
+            keep = {sid for sid in tight if all(ok for ref, (ok, _) in fits2.items() if ref.split('#')[0] == sid)}
+            d = d2 if keep == tight else _compose(story, charts, st, keep) if keep else d
     pptx = d.build(out_dir, name)
     if native and d.chart_slots:
         from ..native_charts import swap

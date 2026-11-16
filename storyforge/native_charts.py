@@ -50,6 +50,37 @@ def native_spec(chart, colors=None):
     return spec
 
 
+def _run(script, *args):
+    r = subprocess.run([sys.executable, str(script), *map(str, args)], capture_output=True, text=True)
+    if r.returncode not in (0, 2):
+        raise RuntimeError(f'svg-charts deck/chart.py failed: {r.stderr.strip()[-800:]}')
+    return r.returncode == 0, r.stderr.strip().removeprefix('chart: ')
+
+
+def _box(slot):
+    return ','.join(f'{v:.2f}' for v in slot['rect'])
+
+
+def check(slots, story, out_dir, svg_charts_path=DEFAULT_SVG_CHARTS):
+    """Per chart ref: (fits as native shapes in its slot, the reason when it does not). Writes the spec files."""
+    script = deck_script(svg_charts_path)
+    if not script.exists():
+        raise RuntimeError(f'{script} is missing: native charts need svg-charts 0.14.1 or later (STORYFORGE_SVG_CHARTS)')
+    specs = Path(out_dir) / 'native'
+    specs.mkdir(parents=True, exist_ok=True)
+    out = {}
+    for slot in slots:
+        try:
+            spec = native_spec(slot['chart'], story.get('colors'))
+        except ValueError as e:
+            out[slot['ref']] = (False, str(e))
+            continue
+        path = specs / (slot['ref'].replace('#', '_') + '.json')
+        path.write_text(json.dumps(spec, ensure_ascii=False, indent=1), encoding='utf-8')
+        out[slot['ref']] = _run(script, path, '--check', '--box', _box(slot))
+    return out
+
+
 def swap(pptx, slots, story, out_dir, svg_charts_path=DEFAULT_SVG_CHARTS):
     """Replace the shape of each chart slot by native shapes. Returns one row per chart: {ref, native, reason}.
     Then renders the PNGs and the .deckcraft again from the changed deck, so the three files agree."""
@@ -58,47 +89,26 @@ def swap(pptx, slots, story, out_dir, svg_charts_path=DEFAULT_SVG_CHARTS):
         raise RuntimeError(f'{script} is missing: native charts need svg-charts 0.14 or later (STORYFORGE_SVG_CHARTS)')
     specs = Path(out_dir) / 'native'
     specs.mkdir(parents=True, exist_ok=True)
+    fits = check(slots, story, out_dir, svg_charts_path)
     rows, done = [], 0
-    box = lambda slot: ','.join(f'{v:.2f}' for v in slot['rect'])  # noqa: E731
-
-    def run(*args):
-        r = subprocess.run([sys.executable, str(script), *map(str, args)], capture_output=True, text=True)
-        if r.returncode not in (0, 2):
-            raise RuntimeError(f'svg-charts deck/chart.py failed: {r.stderr.strip()[-800:]}')
-        return r.returncode == 0, r.stderr.strip().removeprefix('chart: ')
-
-    # Pass 1: write each spec and check its fit. The charts of one slide are native together or not at all,
-    # so a row never mixes shapes with pictures.
+    # The charts of one slide are native together or not at all, so a row never mixes shapes with pictures.
     for slot in slots:
-        row = {'ref': slot['ref'], 'slide': slot['slide'], 'native': False, 'reason': '', 'slot': slot}
+        ok, why = fits[slot['ref']]
+        bad = next((x for x in slots if x['slide'] == slot['slide'] and not fits[x['ref']][0]), None)
+        if ok and bad is not None:
+            ok, why = False, f"{bad['ref']} on the same slide does not fit as native shapes"
+        row = {'ref': slot['ref'], 'slide': slot['slide'], 'native': False, 'reason': why}
         rows.append(row)
-        try:
-            spec = native_spec(slot['chart'], story.get('colors'))
-        except ValueError as e:
-            row['reason'] = str(e)
+        if not ok:
             continue
-        row['kind'] = spec['chart']
-        row['path'] = specs / (slot['ref'].replace('#', '_') + '.json')
-        row['path'].write_text(json.dumps(spec, ensure_ascii=False, indent=1), encoding='utf-8')
-        row['fits'], row['reason'] = run(row['path'], '--check', '--box', box(slot))
-    for row in rows:
-        mates = [r for r in rows if r['slide'] == row['slide']]
-        bad = next((r for r in mates if not r.get('fits')), None)
-        if bad is not None and row.get('fits'):
-            row['fits'], row['reason'] = False, f"{bad['ref']} on the same slide does not fit as native shapes"
-    # Pass 2: draw.
-    for row in rows:
-        slot = row.pop('slot')
-        if row.pop('fits', False):
-            ok, why = run(row['path'], '--into', pptx, '--slide', slot['slide'], '--replace', slot['name'], '--box', box(slot),
+        path = specs / (slot['ref'].replace('#', '_') + '.json')
+        drawn, why = _run(script, path, '--into', pptx, '--slide', slot['slide'], '--replace', slot['name'], '--box', _box(slot),
                           '--palette', PALETTE, '--out', pptx)
-            if not ok:
-                raise RuntimeError(f'{slot["ref"]} passed the check and failed the draw: {why}')
-            _rename_group(pptx, slot['slide'], row['kind'], slot['name'])
-            row['native'] = True
-            done += 1
-        row.pop('path', None)
-        row.pop('kind', None)
+        if not drawn:
+            raise RuntimeError(f'{slot["ref"]} passed the check and failed the draw: {why}')
+        _rename_group(pptx, slot['slide'], native_spec(slot['chart'])['chart'], slot['name'])
+        row['native'] = True
+        done += 1
     (specs / 'report.json').write_text(json.dumps(rows, indent=1), encoding='utf-8')
     if done:
         pptx, png = Path(pptx), Path(pptx).parent / 'png'
