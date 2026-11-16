@@ -54,6 +54,8 @@ class _Deck:
         self.font = style['fonts']['family']
         self.cmds = []
         self.count = 0
+        self.chart_slots = []      # one per chart drawn: slide number, shape name, chart spec, the rect it was given
+        self.native = False        # True: the charts become native shapes after the build
 
     def c(self, cmd, params=None):
         self.cmds.append(cmd if params is None else f'{cmd}={json.dumps(params, ensure_ascii=False)}')
@@ -252,6 +254,8 @@ def _placeholder(d, rect, title, name=None):
 
 
 def _chart_or_placeholder(d, slide, charts, rect, name='Chart'):
+    if slide.get('chart'):
+        d.chart_slots.append({'slide': d.count, 'name': name, 'ref': slide['id'], 'chart': slide['chart'], 'rect': list(rect)})
     png = (charts.get(slide['id']) or {}).get('png')
     if png and Path(png).exists():
         d.picture(png, rect, name=name)
@@ -402,7 +406,8 @@ def _layout_charts_row(d, story, slide, charts, top, bottom):
     if rows:
         head_h, row_h = 20, 16
         table_h = head_h + row_h * (len(rows) - 1)
-        if bottom - table_h - g['gap'] - top < MIN_CHART_H + 20:
+        # Native charts keep their text at its real size, so they need more height than a picture that shrinks.
+        if bottom - table_h - g['gap'] - top < (NATIVE_CHART_H if d.native else MIN_CHART_H) + 20:
             spill, rows = rows, []   # the table goes to a continuation slide; the charts keep the room
         else:
             chart_bottom = bottom - table_h - g['gap']
@@ -418,6 +423,7 @@ def _layout_charts_row(d, story, slide, charts, top, bottom):
             raise ValueError(f'slide {slide["id"]}: only {rect[3]:.0f} pt left for chart {i + 1}; '
                              'shorten the subtitle or the implication')
         item = items[i] if i < len(items) and isinstance(items[i], dict) else {}
+        d.chart_slots.append({'slide': d.count, 'name': f'Chart_{i + 1}', 'ref': f"{slide['id']}#{i}", 'chart': spec, 'rect': list(rect)})
         png = item.get('png')
         if png and Path(png).exists():
             d.picture(png, rect, name=f'Chart_{i + 1}')
@@ -429,6 +435,7 @@ def _layout_charts_row(d, story, slide, charts, top, bottom):
 
 
 MIN_CHART_H = 80
+NATIVE_CHART_H = 190   # takeaway row, title, legend, a plot of 60 pt, axis labels and source
 
 LAYOUTS = {
     'summary': _layout_summary,
@@ -478,12 +485,15 @@ def _bottom_stack(d, slide, charts, footer_top):
     return y
 
 
-def render_pptx(story, charts, out_dir, style='default', name='deck'):
-    """Build the deck; returns the .pptx path. Also writes <name>.deckcraft and png/slide-NN.png."""
+def render_pptx(story, charts, out_dir, style='default', name='deck', native=False, report=None):
+    """Build the deck; returns the .pptx path. Also writes <name>.deckcraft and png/slide-NN.png.
+    native=True then swaps each chart picture for native, editable PowerPoint shapes (storyforge.native_charts);
+    `report`, a list, receives one row per chart: {ref, native, reason}."""
     st = load_style(style)
     check_titles(story, st)
     charts = charts or {}
     d = _Deck(st)
+    d.native = bool(native)
     g, c = st['grid'], st['colors']
     gap = g['gap']
     footer_text = story.get('footer') or st.get('footer_text') or ''
@@ -526,4 +536,10 @@ def render_pptx(story, charts, out_dir, style='default', name='deck'):
             footer_top = d.footer(slide.get('footnotes'), footer_text)
             bottom2 = _bottom_stack(d, {'source': slide.get('source'), 'charts': None, 'id': slide['id']}, charts, footer_top)
             _layout_table(d, story, {'id': slide['id'], 'table': {'rows': spill}}, charts, g['sub_y'], bottom2)
-    return d.build(out_dir, name)
+    pptx = d.build(out_dir, name)
+    if native and d.chart_slots:
+        from ..native_charts import swap
+        rows = swap(pptx, d.chart_slots, story, Path(out_dir))
+        if report is not None:
+            report.extend(rows)
+    return pptx

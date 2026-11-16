@@ -128,8 +128,14 @@ def cmd_build(a):
     from .render.deckcraft import render_pptx
     story = _valid('story', _load(a.story))
     charts = _charts_index(a.charts)
-    pptx = render_pptx(story, charts, a.out, style=a.style)
+    report = []
+    pptx = render_pptx(story, charts, a.out, style=a.style, native=not a.pictures, report=report)
     print(f'{pptx}')
+    if report:
+        kept = [r for r in report if not r['native']]
+        print(f'charts as native shapes: {len(report) - len(kept)} of {len(report)}', file=sys.stderr)
+        for r in kept:
+            print(f'  {r["ref"]} keeps its picture: {r["reason"]}', file=sys.stderr)
     if a.html:
         from .render.html import render_html
         print(render_html(story, charts, Path(a.out) / 'deck.html'))
@@ -166,7 +172,7 @@ def main(argv=None):
     s = sp.add_parser('validate'); s.add_argument('story'); s.add_argument('--rows'); s.set_defaults(f=cmd_validate)
     s = sp.add_parser('storylines'); s.add_argument('candidates', nargs='+'); s.add_argument('--frame'); s.add_argument('--rows'); s.add_argument('--judgments'); s.add_argument('-o', '--out', required=True); s.set_defaults(f=cmd_storylines)
     s = sp.add_parser('charts'); s.add_argument('story'); s.add_argument('-o', '--out', required=True); s.add_argument('--no-png', action='store_true'); s.set_defaults(f=cmd_charts)
-    s = sp.add_parser('build'); s.add_argument('story'); s.add_argument('--charts'); s.add_argument('-o', '--out', required=True); s.add_argument('--html', action='store_true'); s.add_argument('--style', default='default'); s.set_defaults(f=cmd_build)
+    s = sp.add_parser('build'); s.add_argument('story'); s.add_argument('--charts'); s.add_argument('-o', '--out', required=True); s.add_argument('--html', action='store_true'); s.add_argument('--style', default='default'); s.add_argument('--pictures', action='store_true', help='keep the charts as pictures; the default draws them as native, editable shapes'); s.set_defaults(f=cmd_build)
     s = sp.add_parser('handoff'); s.add_argument('story'); s.add_argument('--charts'); s.add_argument('--ratecard'); s.add_argument('-o', '--out', required=True); s.set_defaults(f=cmd_handoff)
     s = sp.add_parser('gates'); s.add_argument('pptx'); s.add_argument('--story', required=True); s.add_argument('--rows'); s.add_argument('--judgments'); s.add_argument('-o', '--out'); s.set_defaults(f=cmd_gates)
     a = p.parse_args(argv)
