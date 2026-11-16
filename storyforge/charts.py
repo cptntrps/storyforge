@@ -34,6 +34,9 @@ def spec_for(chart, layout=None, colors=None):
         spec.setdefault('legend', True)
     if chart.get('type') == 'lineChart':
         spec.setdefault('valueLabels', True)
+    # The callout is the box of svg-charts (a dotted frame on the mark, a line, the words in a box): a ring is easy to miss.
+    if spec.get('annotations'):
+        spec['annotations'] = [{**a, 'style': a.get('style', 'box')} for a in spec['annotations']]
     return spec
 
 
